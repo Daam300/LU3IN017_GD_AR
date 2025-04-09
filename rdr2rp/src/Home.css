@@ -1,8 +1,8 @@
 /* Palette RDR2 : Noir - Rouge profond - Doré - Beige - Gris acier */
-/**/
+
 @font-face {
     font-family: 'CustomFont';
-    src: url('./assets/fonts/police.ttf') format('truetype'); /* Chemin vers la police */
+    src: url('./assets/fonts/police.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
   }
@@ -10,7 +10,7 @@
   body {
     margin: 0;
     padding: 0;
-    font-family: 'CustomFont', cursive; /* Utilisation de la police personnalisée */
+    font-family: 'CustomFont', cursive;
     background-color: #121212;
     color: #e0c097;
     display: flex;
@@ -18,43 +18,45 @@
     align-items: center;
     height: 100vh;
     text-align: center;
-    flex-direction: column; /* Centrer les éléments verticalement */
+    flex-direction: column;
+    position: relative;
   }
   
   /* Conteneur principal de la page */
   .home {
-    background-color: #121212; /* Fond sombre */
     padding: 40px;
     width: 90%;
-    max-width: 600px; /* Largeur maximale pour un bon rendu */
+    max-width: 600px;
     color: white;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 1; /* Le contenu est au-dessus du fond */
   }
   
   /* Image centrée en haut */
   img {
-    width: 100%; /* Prend toute la largeur du conteneur */
-    max-width: 1000px; /* Taille maximale de l'image */
-    margin-bottom: 30px; /* Espacement entre l'image et le texte */
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 30px;
     border-radius: 10px;
-    object-fit: cover; /* Pour garder les proportions de l'image */
+    object-fit: cover;
   }
   
   /* Titre principal */
   h1 {
     font-size: 3rem;
     margin-bottom: 30px;
-    font-family: 'CustomFont', cursive; /* Police Red Dead */
+    font-family: 'CustomFont', cursive;
     letter-spacing: 2px;
   }
   
   .button-container {
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Espacement très réduit entre les boutons */
+    gap: 4px;
     justify-content: center;
     align-items: center;
   }
@@ -64,18 +66,18 @@
     align-items: center;
     justify-content: center;
   
-    width: 300px; /* Plus large */
-    height: 100px; /* Plus haut */
+    width: 300px;
+    height: 100px;
   
     background-image: url('./assets/btn.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
   
-    text-decoration: none; /* Pas de soulignement */
-    color: white; /* Texte blanc */
+    text-decoration: none;
+    color: white;
     font-family: 'CustomFont', cursive;
-    font-size: 1.8rem; /* Texte un peu plus gros */
+    font-size: 1.8rem;
     text-transform: uppercase;
     font-weight: bold;
   
@@ -90,11 +92,21 @@
   .btn-link:hover {
     opacity: 0.8;
     transform: scale(1.05);
-    color: white; /* Maintenir la couleur blanche */
+    color: white;
   }
   
-  .btn-link:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
-    color: white; /* Force la couleur au survol pour éviter le bleu */
+  /* Overlay pour assombrir l'image de fond */
+  .background-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; /* Fond derrière le contenu */
+    transition: background-image 1s ease-in-out;
+    /* Overlay noir semi-transparent pour assombrir l'image */
+    background-color: rgba(0, 0, 0, 0.5); /* Ajout d'un filtre noir */
   }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import BackgroundSlideshow from '../BackgroundSlideshow';
 import './login.css';
 
 function LoginForm() {
@@ -9,6 +11,7 @@ function LoginForm() {
 
   return (
     <div className="login-container">
+      <BackgroundSlideshow /> {/* Fond dynamique */}
       <h1>Ouvrir une session</h1>
       <form method="POST" onSubmit={handleSubmit} className="login-form">
         <label htmlFor="login">Login</label>

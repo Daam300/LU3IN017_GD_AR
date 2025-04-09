@@ -1,17 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // 👈 On importe le hook
+import { useNavigate } from 'react-router-dom';
+import BackgroundSlideshow from '../BackgroundSlideshow'; // Assure-toi que le chemin est correct
 import './Register.css';
 
 function Register() {
-  const navigate = useNavigate(); // 👈 Initialisation du hook
+  const navigate = useNavigate();
 
   const handleCancel = (e) => {
-    e.preventDefault(); // On empêche le comportement par défaut du formulaire
-    navigate('/'); // 👈 Redirection vers la Home page
+    e.preventDefault();
+    navigate('/'); // Redirection vers la page d'accueil
   };
 
   return (
     <div className="register-container">
+      <BackgroundSlideshow /> {/* Ajoute le fond dynamique */}
       <h2>Page d'Inscription</h2>
       <form className="register-form">
         <label htmlFor="prenom">Prénom</label>
