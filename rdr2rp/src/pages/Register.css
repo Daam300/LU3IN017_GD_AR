@@ -1,0 +1,83 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('../assets/fonts/police.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'CustomFont', cursive;
+    background-color: #121212;
+    color: #e0c097;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .register-container {
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    width: 400px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #e0c097;
+    font-size: 2rem;
+    text-transform: uppercase;
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .register-form label {
+    text-align: left;
+    color: #e0c097;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .register-form input {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2e2e2e;
+    color: #e0c097;
+    font-family: 'CustomFont', cursive;
+  }
+  
+  .register-form input:focus {
+    outline: 2px solid #e0c097;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .button-group button {
+    background-color: ##e0c097;
+    color: #e0c097;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'CustomFont', cursive;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .button-group button:hover {
+    background-color: #ff0000;
+    transform: scale(1.05);
+  }
