@@ -11,11 +11,16 @@ function Register() {
     navigate('/'); // Redirection vers la page d'accueil
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/signup_waiting'); // Redirection vers la page signup_waiting
+  };
+
   return (
     <div className="register-container">
       <BackgroundSlideshow /> {/* Ajoute le fond dynamique */}
       <h2>Page d'Inscription</h2>
-      <form className="register-form">
+      <form className="register-form" onSubmit={handleSubmit}>
         <label htmlFor="prenom">Prénom</label>
         <input type="text" id="prenom" />
 

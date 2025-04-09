@@ -9,6 +9,7 @@ function LoginForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Connexion soumise');
+    navigate('/homepage'); // Redirection vers la page Homepage
   };
 
   const handleCancel = (e) => {

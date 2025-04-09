@@ -87,6 +87,12 @@
     background-color: transparent;
   
     transition: transform 0.3s ease, opacity 0.3s ease;
+  }  img {
+    width: 200px; /* Augmentez la taille ici */
+    max-width: 100%; /* Assure que l'image ne dépasse pas la largeur du conteneur */
+    margin-bottom: 30px;
+    border-radius: 10px; /* Facultatif : ajoute des coins arrondis */
+    object-fit: cover; /* Maintient les proportions */
   }
   
   .btn-link:hover {
