@@ -1,12 +1,11 @@
-/* Charger la police personnalisée "police.ttf" */
+/* Palette RDR2 : Noir - Rouge profond - Doré - Beige - Gris acier */
+
 @font-face {
-    font-family: 'CustomFont'; /* Nom de la police */
+    font-family: 'CustomFont';
     src: url('./assets/fonts/police.ttf') format('truetype'); /* Chemin vers la police */
     font-weight: normal;
     font-style: normal;
   }
-  
-  /* Palette RDR2 : Noir - Rouge profond - Doré - Beige - Gris acier */
   
   body {
     margin: 0;
@@ -18,28 +17,41 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1520101243055-9319cf82ebb3?fit=crop&w=1920&q=80'); /* Image de fond */
-    background-size: cover;
-    background-attachment: fixed;
     text-align: center;
+    flex-direction: column; /* Centrer les éléments verticalement */
   }
   
+  /* Conteneur principal de la page */
   .home {
-    background-color: rgba(0, 0, 0, 0.6);  /* Ombre sur l'arrière-plan pour mieux voir le texte */
+    background-color: #121212; /* Fond sombre */
     padding: 40px;
-    border-radius: 15px;
-    width: 90%;  /* Ajuste la largeur selon ton écran */
-    max-width: 600px;  /* Taille max pour que ce ne soit pas trop large */
-    color: #f5c518;
+    width: 90%;
+    max-width: 600px; /* Largeur maximale pour un bon rendu */
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
+  /* Image centrée en haut */
+  img {
+    width: 100%; /* Prend toute la largeur du conteneur */
+    max-width: 1000px; /* Taille maximale de l'image */
+    margin-bottom: 30px; /* Espacement entre l'image et le texte */
+    border-radius: 10px;
+    object-fit: cover; /* Pour garder les proportions de l'image */
+  }
+  
+  /* Titre principal */
   h1 {
     font-size: 3rem;
     margin-bottom: 30px;
-    font-family: 'CustomFont', cursive;  /* Utilisation de la police personnalisée */
+    font-family: 'CustomFont', cursive; /* Police Red Dead */
     letter-spacing: 2px;
   }
   
+  /* Conteneur des boutons */
   .button-container {
     display: flex;
     flex-direction: column;
@@ -47,6 +59,7 @@
     justify-content: center;
   }
   
+  /* Style des boutons */
   .btn {
     background-color: #b22222;  /* Rouge profond */
     color: #fff;
