@@ -7,7 +7,7 @@ function Home() {
   return (
     <div className="home">
       <img src={backgroundImage} alt="Red Dead Redemption 2" />
-      <h1>Bienvenue sur RED DEAD ROLEPLAY</h1>
+      <h1>Bienvenue sur RED DEAD ROLEPLAY </h1>
       <div className="button-container">
         <Link to="/login" className="btn-link">Connexion</Link>
         <Link to="/register" className="btn-link">Inscription</Link>
