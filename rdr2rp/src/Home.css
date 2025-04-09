@@ -1,0 +1,65 @@
+/* Charger la police personnalisée "police.ttf" */
+@font-face {
+    font-family: 'CustomFont'; /* Nom de la police */
+    src: url('./assets/fonts/police.ttf') format('truetype'); /* Chemin vers la police */
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  /* Palette RDR2 : Noir - Rouge profond - Doré - Beige - Gris acier */
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'CustomFont', cursive; /* Utilisation de la police personnalisée */
+    background-color: #121212;
+    color: #e0c097;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1520101243055-9319cf82ebb3?fit=crop&w=1920&q=80'); /* Image de fond */
+    background-size: cover;
+    background-attachment: fixed;
+    text-align: center;
+  }
+  
+  .home {
+    background-color: rgba(0, 0, 0, 0.6);  /* Ombre sur l'arrière-plan pour mieux voir le texte */
+    padding: 40px;
+    border-radius: 15px;
+    width: 90%;  /* Ajuste la largeur selon ton écran */
+    max-width: 600px;  /* Taille max pour que ce ne soit pas trop large */
+    color: #f5c518;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    font-family: 'CustomFont', cursive;  /* Utilisation de la police personnalisée */
+    letter-spacing: 2px;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .btn {
+    background-color: #b22222;  /* Rouge profond */
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-transform: uppercase;
+  }
+  
+  .btn:hover {
+    background-color: #ff0000;
+    transform: scale(1.1);
+  }
