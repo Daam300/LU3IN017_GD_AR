@@ -4,20 +4,23 @@ import './login.css';
 function LoginForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Ajoutez ici la logique pour gérer la connexion
     console.log('Connexion soumise');
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Ouvrir une session</h1>
-      <form method="POST" onSubmit={handleSubmit}>
+      <form method="POST" onSubmit={handleSubmit} className="login-form">
         <label htmlFor="login">Login</label>
-        <input id="login" name="login" type="text" /><br />
+        <input id="login" name="login" type="text" />
+
         <label htmlFor="mdp">Mot de passe</label>
-        <input id="mdp" name="mdp" type="password" /><br />
-        <button type="submit">Connexion</button>
-        <button type="reset">Annuler</button>
+        <input id="mdp" name="mdp" type="password" />
+
+        <div className="button-group">
+          <button type="submit">Connexion</button>
+          <button type="reset">Annuler</button>
+        </div>
       </form>
     </div>
   );
