@@ -78,6 +78,6 @@
   }
   
   .button-group button:hover {
-    background-color: #ff0000;
+    background-color: #800001;
     transform: scale(1.05);
   }

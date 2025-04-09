@@ -1,7 +1,15 @@
 import React from 'react';
-import './Register.css'; // N'oublie pas d'importer ton CSS ici
+import { useNavigate } from 'react-router-dom'; // 👈 On importe le hook
+import './Register.css';
 
 function Register() {
+  const navigate = useNavigate(); // 👈 Initialisation du hook
+
+  const handleCancel = (e) => {
+    e.preventDefault(); // On empêche le comportement par défaut du formulaire
+    navigate('/'); // 👈 Redirection vers la Home page
+  };
+
   return (
     <div className="register-container">
       <h2>Page d'Inscription</h2>
@@ -23,7 +31,7 @@ function Register() {
 
         <div className="button-group">
           <button type="submit">Inscription</button>
-          <button type="reset">Annuler</button>
+          <button onClick={handleCancel}>Annuler</button>
         </div>
       </form>
     </div>
