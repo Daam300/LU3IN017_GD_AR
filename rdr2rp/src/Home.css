@@ -51,28 +51,50 @@
     letter-spacing: 2px;
   }
   
-  /* Conteneur des boutons */
   .button-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 4px; /* Espacement très réduit entre les boutons */
     justify-content: center;
+    align-items: center;
   }
   
-  /* Style des boutons */
-  .btn {
-    background-color: #b22222;  /* Rouge profond */
-    color: #fff;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+  .btn-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    width: 300px; /* Plus large */
+    height: 100px; /* Plus haut */
+  
+    background-image: url('./assets/btn.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  
+    text-decoration: none; /* Pas de soulignement */
+    color: white; /* Texte blanc */
+    font-family: 'CustomFont', cursive;
+    font-size: 1.8rem; /* Texte un peu plus gros */
     text-transform: uppercase;
+    font-weight: bold;
+  
+    border: none;
+    outline: none;
+    appearance: none;
+    background-color: transparent;
+  
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
   
-  .btn:hover {
-    background-color: #ff0000;
-    transform: scale(1.1);
+  .btn-link:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+    color: white; /* Maintenir la couleur blanche */
+  }
+  
+  .btn-link:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+    color: white; /* Force la couleur au survol pour éviter le bleu */
   }
