@@ -1,12 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import de useNavigate
 import BackgroundSlideshow from '../BackgroundSlideshow';
 import './login.css';
 
 function LoginForm() {
+  const navigate = useNavigate(); // Initialisation de navigate
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Connexion soumise');
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate('/'); // Redirection vers la page d'accueil
   };
 
   return (
@@ -22,9 +29,9 @@ function LoginForm() {
 
         <div className="button-group">
           <button type="submit">Connexion</button>
-          <button type="reset">Annuler</button>
+          <button onClick={handleCancel}>Annuler</button>
         </div>
-      </form>
+      </form> 
     </div>
   );
 }
