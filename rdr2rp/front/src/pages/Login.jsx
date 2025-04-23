@@ -8,6 +8,10 @@ function LoginForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    /*const result = axios.post('http://localhost:8000/api/auth/login', {
+      login: event.target.login.value,
+      mdp: event.target.mdp.value,
+    });*/
     console.log('Connexion soumise');
     navigate('/homepage'); // Redirection vers la page Homepage
   };
