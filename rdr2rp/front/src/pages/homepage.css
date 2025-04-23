@@ -5,6 +5,15 @@
     font-style: normal;
   }
   
+  /* Réinitialisation des marges et paddings */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Empêche les débordements */
+  }
+  
   body {
     margin: 0;
     padding: 0;
@@ -127,11 +136,13 @@
     top: 0;
     left: 0;
     width: 100%;
+    max-width: 1200px; /* Limite la largeur du contenu */
     height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+    margin: 0 auto; /* Centre le contenu horizontalement */
     z-index: 1; /* Place le contenu au-dessus des images */
   }
   
@@ -165,7 +176,14 @@
     color: #e0c097;
   }
   
-  /* Bouton de déconnexion */
+  /* Conteneur des boutons dans le header */
+  .login_register {
+    display: flex;
+    gap: 15px; /* Espacement entre les icônes */
+    align-items: center;
+  }
+  
+  /* Boutons du header */
   .login_register button {
     padding: 10px 20px;
     border: none;
@@ -181,6 +199,19 @@
     background-color: #ff0000;
   }
 
+  /* Style des icônes */
+  .icon-button {
+    width: 40px; /* Taille des icônes */
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .icon-button:hover {
+    transform: scale(1.1); /* Agrandit légèrement l'icône au survol */
+    opacity: 0.8; /* Réduit l'opacité au survol */
+  }
+
   /* Conteneur principal de la page */
   .page-container {
     display: grid;
@@ -190,6 +221,7 @@
     grid-template-columns: 250px 1fr; /* Barre latérale de 250px et le reste pour le contenu principal */
     grid-template-rows: auto 1fr; /* Header en haut, contenu principal en bas */
     height: 100vh; /* Prend toute la hauteur de la fenêtre */
+    width: 100vw; /* Prend toute la largeur de la fenêtre */
   }
   
   /* Barre latérale */

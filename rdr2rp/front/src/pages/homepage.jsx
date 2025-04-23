@@ -3,6 +3,9 @@ import { useNavigate, Link } from 'react-router-dom'; // Import de useNavigate e
 import './homepage.css';
 import backgroundImage from '../assets/rdr2.png';
 import BackgroundSlideshow from '../BackgroundSlideshow';
+import profileIcon from '../assets/profile.png';
+import parameterIcon from '../assets/parameter.png';
+import logoutIcon from '../assets/logout.png';
 
 function Homepage() {
   const navigate = useNavigate(); // Initialisation de navigate
@@ -33,7 +36,24 @@ function Homepage() {
           </div>
 
           <div className="login_register">
-            <button onClick={handleLogout}>Se déconnecter</button>
+            <img
+              src={profileIcon}
+              alt="Profil"
+              className="icon-button"
+              onClick={() => navigate('/profile')}
+            />
+            <img
+              src={parameterIcon}
+              alt="Paramètres"
+              className="icon-button"
+              onClick={() => navigate('/settings')}
+            />
+            <img
+              src={logoutIcon}
+              alt="Se déconnecter"
+              className="icon-button"
+              onClick={handleLogout}
+            />
           </div>
         </div>
       </header>
