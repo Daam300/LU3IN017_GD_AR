@@ -29,6 +29,18 @@
     position: relative;
   }
   
+  /* Mode clair */
+  body.light-mode {
+    background-color: #ffffff; /* Arrière-plan blanc */
+    color: #121212; /* Texte sombre */
+  }
+  
+  /* Mode sombre */
+  body.dark-mode {
+    background-color: #121212; /* Arrière-plan sombre */
+    color: #e0c097; /* Texte clair */
+  }
+  
   /* Overlay sombre */
   .background-overlay {
     position: fixed;
@@ -270,4 +282,54 @@
     background-color: #121212;
     color: #e0c097;
     overflow-y: auto;
+  }
+
+  /* Mode clair pour le body */
+  body.light-mode {
+    background-color: #ffffff; /* Arrière-plan blanc */
+    color: #121212; /* Texte sombre */
+  }
+
+  /* Mode sombre pour le body */
+  body.dark-mode {
+    background-color: #121212; /* Arrière-plan sombre */
+    color: #e0c097; /* Texte clair */
+  }
+
+  /* Mode clair pour la sidebar */
+  body.light-mode .sidebar {
+    background-color: #d3d3d3; /* Gris clair */
+    color: #121212; /* Texte sombre */
+  }
+
+  body.light-mode .sidebar a {
+    color: #121212; /* Liens en texte sombre */
+  }
+
+  body.light-mode .sidebar a:hover {
+    background-color: #c0c0c0; /* Couleur de survol légèrement plus foncée */
+  }
+
+  body.light-mode .sidebar h2,
+  body.light-mode .sidebar p {
+    color: #121212; /* Titre et texte en sombre */
+  }
+
+  /* Mode sombre pour la sidebar */
+  body.dark-mode .sidebar {
+    background-color: #1e1e1e; /* Fond sombre */
+    color: #e0c097; /* Texte clair */
+  }
+
+  body.dark-mode .sidebar a {
+    color: #e0c097; /* Liens en texte clair */
+  }
+
+  body.dark-mode .sidebar a:hover {
+    background-color: #2e2e2e; /* Couleur de survol sombre */
+  }
+
+  body.dark-mode .sidebar h2,
+  body.dark-mode .sidebar p {
+    color: #e0c097; /* Titre et texte en clair */
   }

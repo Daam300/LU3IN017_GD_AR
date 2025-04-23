@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Import de useNavigate et Link
 import './homepage.css';
 import backgroundImage from '../assets/rdr2.png';
@@ -9,6 +9,12 @@ import logoutIcon from '../assets/logout.png';
 
 function Homepage() {
   const navigate = useNavigate(); // Initialisation de navigate
+
+  useEffect(() => {
+    // Récupère le thème depuis le Local Storage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme === 'dark' ? 'dark-mode' : 'light-mode';
+  }, []);
 
   const handleLogout = () => {
     navigate('/'); // Redirection vers la page d'accueil
@@ -46,7 +52,7 @@ function Homepage() {
               src={parameterIcon}
               alt="Paramètres"
               className="icon-button"
-              onClick={() => navigate('/settings')}
+              onClick={() => navigate('/parameter')}
             />
             <img
               src={logoutIcon}
@@ -64,17 +70,11 @@ function Homepage() {
         <p>Bienvenue dans l'application !</p>
         <p>Utilisez les liens ci-dessous pour naviguer :</p>
         <Link to="/dashboard">Dashboard</Link>
-        <Link to="/profile">Profil</Link>
-        <Link to="/settings">Paramètres</Link>
       </aside>
 
       {/* Contenu principal */}
       <main className="main-content">
-        <h1>Bienvenue sur la page principale</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-          euismod lacus sed velit fringilla ullamcorper.
-        </p>
+        <h1>Bienvenue sur RDR2RP !</h1>
       </main>
     </div>
   );

@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Homepage from './pages/homepage';
 import SignupWaiting from './pages/signup_waiting';
+import Parameter from './pages/parameter'; // Import du composant Parameter
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/homepage" element={<Homepage />} />
         <Route path="/signup_waiting" element={<SignupWaiting />} />
+        <Route path="/parameter" element={<Parameter />} /> {/* Ajout de la route */}
       </Routes>
     </Router>
   );

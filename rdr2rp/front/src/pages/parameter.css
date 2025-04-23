@@ -1,0 +1,103 @@
+/* Mode clair */
+body.light-mode {
+  background-color: #ffffff; /* Arrière-plan blanc */
+  color: #e0c097; /* Texte sombre */
+}
+
+/* Mode sombre */
+body.dark-mode {
+  background-color: #1e1e1e; /* Arrière-plan sombre */
+  color: #e0c097; /* Texte clair */
+}
+
+/* Conteneur des paramètres */
+.parameter-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #000000; /* Couleur de fond de l'encadré */
+  color: inherit; /* Hérite de la couleur du texte du body */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.parameter-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.parameter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #e0c097;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #e0c097;
+  border-radius: 4px;
+  background-color: #2e2e2e;
+  color: #e0c097;
+}
+
+.form-group input:focus {
+  outline: 2px solid #e0c097;
+}
+
+.save-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #e0c097;
+  color: #121212;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #ff0000;
+}
+
+/* Bouton de bascule */
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.theme-toggle-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #e0c097;
+  transition: background-color 0.3s ease;
+}
+
+.theme-toggle-circle.filled {
+  background-color: #e0c097;
+}
+
+.theme-toggle-circle.empty {
+  background-color: transparent;
+}
+
+.theme-toggle-container span {
+  font-size: 1rem;
+  font-weight: bold;
+  color: inherit; /* Hérite de la couleur du texte du body */
+}
