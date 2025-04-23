@@ -1,6 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import de useNavigate
+import { useNavigate, Link } from 'react-router-dom'; // Import de useNavigate et Link
 import './homepage.css';
+import backgroundImage from '../assets/rdr2.png';
+import BackgroundSlideshow from '../BackgroundSlideshow';
 
 function Homepage() {
   const navigate = useNavigate(); // Initialisation de navigate
@@ -9,57 +11,50 @@ function Homepage() {
     navigate('/'); // Redirection vers la page d'accueil
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Message envoyé');
+  };
+
   return (
-    <div>
+    <div className="page-container">
       {/* Header */}
-      <header>
-        <div className="logo1">
-          <img src="logo.jpg" alt="un logo bien cool" />
-        </div>
+      <header className="header-container">
+        <BackgroundSlideshow /> {/* Images défilantes en arrière-plan */}
+        <div className="header-content">
+          <div className="logo1">
+            <img src={backgroundImage} alt="Red Dead Redemption 2" />
+          </div>
 
-        <div className="search1">
-          <form>
-            <input id="search" type="text" placeholder="Recherche..." />
-          </form>
-        </div>
-
-        <div className="login_register">
-          <button onClick={handleLogout}>Se déconnecter</button>
-        </div>
-      </header>
-
-      {/* Main content */}
-      <main>
-        <aside>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod lacus sed velit fringilla ullamcorper.
-          </p>
-        </aside>
-
-        <div className="msg_area">
-          <div className="Zone nouveau message">
+          <div className="search1">
             <form>
-              <textarea
-                name="Envoyer"
-                rows="5"
-                cols="30"
-                placeholder="Écrire un nouveau message..."
-              ></textarea>
-              <button type="submit">Envoyer</button>
+              <input id="search" type="text" placeholder="Recherche..." />
             </form>
           </div>
 
-          <div className="Liste messages">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod lacus sed velit fringilla ullamcorper.
-            </p>
-            <p>29-01-2025</p>
-            <p>xXx_Dark_Maxou69_xXx</p>
-            <a href="reply.html">
-              <button>Répondre</button>
-            </a>
+          <div className="login_register">
+            <button onClick={handleLogout}>Se déconnecter</button>
           </div>
         </div>
+      </header>
+
+      {/* Barre latérale */}
+      <aside className="sidebar">
+        <h2>Navigation</h2>
+        <p>Bienvenue dans l'application !</p>
+        <p>Utilisez les liens ci-dessous pour naviguer :</p>
+        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/profile">Profil</Link>
+        <Link to="/settings">Paramètres</Link>
+      </aside>
+
+      {/* Contenu principal */}
+      <main className="main-content">
+        <h1>Bienvenue sur la page principale</h1>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+          euismod lacus sed velit fringilla ullamcorper.
+        </p>
       </main>
     </div>
   );

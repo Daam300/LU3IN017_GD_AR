@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import BackgroundSlideshow from './BackgroundSlideshow';
 import './Home.css';
-import backgroundImage from './assets/rdr2.jpg'; // ceci tu peux le retirer si c'était ton fond
+import backgroundImage from './assets/rdr2.png';
 
 function Home() {
   return (
