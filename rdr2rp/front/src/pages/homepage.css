@@ -137,6 +137,7 @@
   /* Header container */
   .header-container {
     grid-area: header;
+    justify-content: space-evenly;
     position: relative; /* Permet de positionner le contenu au-dessus */
     height: 200px; /* Hauteur du header */
     overflow: hidden; /* Cache les débordements des images */
@@ -148,14 +149,11 @@
     top: 0;
     left: 0;
     width: 100%;
-    max-width: 1200px; /* Limite la largeur du contenu */
     height: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    margin: 0 auto; /* Centre le contenu horizontalement */
-    z-index: 1; /* Place le contenu au-dessus des images */
+    justify-content: space-between; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    margin: auto; /* Centre le contenu horizontalement */
   }
   
   /* Images défilantes */
