@@ -1,0 +1,309 @@
+/* Réutilisation du header de la homepage */
+.header-container {
+  position: relative;
+  height: 200px; /* Hauteur du header */
+  overflow: hidden; /* Cache les débordements des images */
+  z-index: 1; /* Place le contenu au-dessus du BackgroundSlideshow */
+}
+
+.header-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  margin: auto; /* Centre le contenu horizontalement */
+  z-index: 1; /* Place le contenu au-dessus du BackgroundSlideshow */
+}
+
+.logo1 img {
+  width: 150px; /* Taille du logo */
+  height: auto;
+  border-radius: 8px;
+}
+
+.search1 form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search1 input {
+  width: 300px; /* Largeur de la barre de recherche */
+  padding: 8px;
+  border: 1px solid #e0c097;
+  border-radius: 4px;
+  background-color: #2e2e2e;
+  color: #e0c097;
+}
+
+.search1 input::placeholder {
+  color: #e0c097;
+}
+
+.login_register {
+  display: flex;
+  gap: 15px; /* Espacement entre les icônes */
+  align-items: center;
+}
+
+.icon-button {
+  width: 40px; /* Taille des icônes */
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.icon-button:hover {
+  transform: scale(1.1); /* Agrandit légèrement l'icône au survol */
+  opacity: 0.8; /* Réduit l'opacité au survol */
+}
+
+/* Conteneur principal */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centre horizontalement */
+  justify-content: center; /* Centre verticalement */
+  margin: 0 auto; /* Centre horizontalement par rapport à la page */
+  padding: 20px;
+  color: #e0c097;
+  text-align: center;
+  height: calc(100vh - 200px); /* Ajuste la hauteur pour exclure le header */
+}
+
+.profile-container h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #e0c097;
+}
+
+/* Informations du profil */
+.profile-info {
+  text-align: center;
+  margin-bottom: 20px;
+  max-width: 600px; /* Limite la largeur pour un meilleur rendu */
+}
+
+.profile-info p {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+.back-button {
+  background-color: #800001;
+  color: #e0c097;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #e0c097;
+  color: #800001;
+  transform: scale(1.05);
+}
+
+.background-slideshow {
+  z-index: -1; /* Place le diaporama derrière tout */
+}
+
+/* Logo du profil */
+.profile-logo {
+  width: 100px; /* Taille du logo */
+  height: 100px;
+  border-radius: 50%; /* Rond */
+  margin-bottom: 20px; /* Espacement avec le titre */
+  border: 2px solid #e0c097; /* Bordure dorée */
+  object-fit: cover; /* Ajuste l'image pour qu'elle remplisse le cercle */
+}
+
+/* Menu déroulant des messages */
+.messages-menu {
+  position: fixed;
+  top: 200px; /* Aligne avec le bas du header */
+  right: 0;
+  width: 300px; /* Largeur du menu */
+  height: calc(100vh - 200px); /* Hauteur du menu */
+  background-color: #2e2e2e; /* Couleur de fond */
+  color: #e0c097; /* Couleur du texte */
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Ombre pour un effet de profondeur */
+  overflow-y: auto; /* Permet de scroller si le contenu dépasse */
+}
+
+.messages-menu h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #e0c097;
+  text-align: center;
+}
+
+.messages-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.messages-menu li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #e0c097;
+  padding: 10px;
+  background-color: #121212; /* Fond des messages */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.messages-menu li:hover {
+  background-color: #800001; /* Fond au survol */
+  color: #e0c097;
+}
+
+/* Bouton pour afficher les messages */
+.messages-toggle {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.messages-toggle button {
+  background-color: #800001;
+  color: #e0c097;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.messages-toggle button:hover {
+  background-color: #e0c097;
+  color: #800001;
+  transform: scale(1.05);
+}
+
+/* Volet déroulant des messages */
+.messages-dropdown {
+  position: fixed;
+  bottom: -300px; /* Masque le volet en dehors de l'écran */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%; /* Largeur du volet */
+  max-width: 600px;
+  background-color: #2e2e2e;
+  color: #e0c097;
+  padding: 20px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+  transition: bottom 0.3s ease; /* Animation pour le volet */
+  overflow-y: auto;
+  max-height: 300px; /* Limite la hauteur du volet */
+}
+
+.messages-dropdown.visible {
+  bottom: 0; /* Affiche le volet */
+}
+
+.messages-dropdown h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.messages-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.messages-dropdown li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  padding: 10px;
+  background-color: #121212;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.messages-dropdown li:hover {
+  background-color: #800001;
+  color: #e0c097;
+}
+
+/* Barre latérale des messages */
+.messages-sidebar {
+  position: fixed;
+  top: 200px; /* Aligne avec le bas du header */
+  right: -300px; /* Masque la barre latérale en dehors de l'écran */
+  width: 300px; /* Largeur de la barre latérale */
+  height: calc(100vh - 200px); /* Hauteur de la barre latérale (exclut le header) */
+  background-color: #2e2e2e; /* Couleur de fond */
+  color: #e0c097; /* Couleur du texte */
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); /* Ombre pour un effet de profondeur */
+  overflow-y: auto; /* Permet de scroller si le contenu dépasse */
+  transition: right 0.3s ease; /* Animation pour l'ouverture/fermeture */
+  z-index: 1000; /* Place la barre au-dessus des autres éléments */
+}
+
+.messages-sidebar.visible {
+  right: 0; /* Affiche la barre latérale */
+}
+
+.messages-sidebar h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.messages-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.messages-sidebar li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  padding: 10px;
+  background-color: #121212; /* Fond des messages */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.messages-sidebar li:hover {
+  background-color: #800001; /* Fond au survol */
+  color: #e0c097;
+}
+
+/* Bouton pour afficher/masquer la barre latérale */
+.messages-toggle {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.messages-toggle button {
+  background-color: #800001;
+  color: #e0c097;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.messages-toggle button:hover {
+  background-color: #e0c097;
+  color: #800001;
+  transform: scale(1.05);
+}

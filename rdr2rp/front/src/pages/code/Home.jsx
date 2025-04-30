@@ -1,0 +1,21 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import BackgroundSlideshow from './BackgroundSlideshow';
+import '../visual/Home.css';
+import backgroundImage from '../../assets/rdr2.png';
+
+function Home() {
+  return (
+    <div className="home">
+      <BackgroundSlideshow />
+      <img src={backgroundImage} alt="Red Dead Redemption 2" />
+      <h1>Bienvenue sur RDR2 RP</h1>
+      <p>Le premier serveur de Red Dead Redemption 2 RP ! Parlez avec vos amis, explorez le monde et vivez des aventures incroyables.</p>
+      <div className="button-container">
+        <Link to="/login" className="btn-link">Connexion</Link>
+        <Link to="/register" className="btn-link">Inscription</Link>
+      </div>
+    </div>
+  );
+}
+export default Home;
