@@ -32,7 +32,7 @@ function Profile() {
         username: 'JohnDoe',
         email: 'johndoe@example.com',
         registrationDate: '2025-01-15',
-        bio: 'Passionné par les jeux vidéo et le développement web.',
+        bio: 'Passionné par les jeux vidéo et le développement web. Je suis un développeur passionné par la création d\'applications web et mobiles. J\'adore explorer de nouveaux défis et apprendre de nouvelles technologies.',
       };
       setUserData(data);
     };
@@ -93,8 +93,8 @@ function Profile() {
 
       {/* Profil */}
       <div className="profile-container">
-        {/* Logo du profil */}
-        <img src={profileIcon} alt="Logo du profil" className="profile-logo" />
+        {/* Photo de profil */}
+        <img src={profileIcon} alt="Photo de profil" className="profile-logo" />
         <h1>Profil de l'utilisateur</h1>
         <div className="profile-info">
           <p><strong>Pseudo :</strong> {userData.username}</p>
@@ -102,14 +102,16 @@ function Profile() {
           <p><strong>Date d'inscription :</strong> {userData.registrationDate}</p>
           <p><strong>Bio :</strong> {userData.bio}</p>
         </div>
+
+        {/* Bouton pour afficher/masquer les messages */}
+        <div className="messages-toggle">
+          <button onClick={toggleMessages}>Messages envoyés</button>
+        </div>
+
+        {/* Bouton pour retourner à l'accueil */}
         <button className="back-button" onClick={handleBackToHome}>
           Retour à l'accueil
         </button>
-      </div>
-
-      {/* Bouton pour afficher/masquer la barre latérale */}
-      <div className="messages-toggle">
-        <button onClick={toggleMessages}>Messages envoyés</button>
       </div>
 
       {/* Barre latérale des messages */}
