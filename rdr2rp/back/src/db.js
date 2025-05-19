@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const uri = 'mongodb://localhost';
+const uri = "mongodb://localhost:27017";
 const dbName = 'rdrrp_db';
 
 const client = new MongoClient(uri, { connectTimeoutMS: 5000 });

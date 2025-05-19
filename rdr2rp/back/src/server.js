@@ -1,21 +1,18 @@
+// back/src/server.js
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config(); // Charge le fichier .env (si présent)
-
-const api = require('./api.js');
+require('dotenv').config();
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 3000;
 
-// Autorise toutes les origines (CORS)
-app.use(cors({ origin: '*' }));
-// Permet de parser du JSON dans les requêtes
+app.use(cors());
 app.use(express.json());
 
-// Routes pour "messages"
-app.use('/api', api);
+require('./services/api.js').then((apiRoutes) => {
+  app.use('/api', apiRoutes);
 
-// Lancement du serveur
-app.listen(port, () => {
-  console.log('[SERVEUR] En écoute sur le port ' + port);
+  app.listen(port, () => {
+    console.log(`[SERVEUR] En écoute sur le port ${port}`);
+  });
 });
