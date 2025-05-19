@@ -12,23 +12,31 @@ function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:5173/api/login', {
+      const response = await fetch('http://localhost:3000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ login, mdp })
+        body: JSON.stringify({ login, mdp }),
       });
+  
+      const contentType = response.headers.get('content-type');
+      const data = contentType?.includes('application/json') ? await response.json() : null;
+  
       if (response.ok) {
-        navigate('/homepage');
+        if (data?.status === 'pending') {
+          navigate('/signup_waiting');
+        } else {
+          navigate('/homepage');
+        }
+      } else if (response.status === 403 && data?.status === 'pending') {
+        navigate('/signup_waiting');
       } else {
-        const data = await response.json();
-        alert(data.message);
+        alert(data?.message || 'Erreur de connexion');
       }
     } catch (err) {
       console.error('Erreur réseau:', err);
       alert('Erreur de connexion');
     }
   };
-
   const handleCancel = (e) => {
     e.preventDefault();
     navigate('/');
@@ -39,7 +47,7 @@ function LoginForm() {
       <BackgroundSlideshow />
       <h1>Ouvrir une session</h1>
       <form method="POST" onSubmit={handleSubmit} className="login-form">
-        <label htmlFor="login">Login</label>
+        <label htmlFor="login">Nom d'utilisateur</label>
         <input
           id="login"
           name="login"

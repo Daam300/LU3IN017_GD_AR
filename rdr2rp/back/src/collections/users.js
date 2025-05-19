@@ -11,7 +11,7 @@ const client = new MongoClient(uri);
 let usersCollection;
 console.log("[API] /api/users/register prêt !");
 client.connect().then(() => {
-  const db = client.db("rdr2rp");
+  const db = client.db("rdrrp_db");
   usersCollection = db.collection("users");
 });
 
@@ -54,17 +54,43 @@ router.post('/register', async (req, res) => {
   });
 
 // LOGIN
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = await usersCollection.findOne({ email });
-  if (!user) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
-
-  const match = await bcrypt.compare(password, user.passwordHash);
-  if (!match) return res.status(401).json({ error: "Email ou mot de passe incorrect" });
-
-  const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
-  res.json({ token });
-});
+router.post('/login', async (req, res) => {
+    const { login, mdp } = req.body;
+    console.log("[LOGIN] Reçu :", { login, mdp });
+  
+    try {
+      const user = await usersCollection.findOne({ username: login });
+      console.log("[LOGIN] Utilisateur trouvé :", user);
+  
+      if (!user) {
+        console.log("[LOGIN] ❌ Aucun utilisateur trouvé");
+        return res.status(401).json({ message: 'Utilisateur introuvable' });
+      }
+  
+      const match = await bcrypt.compare(mdp, user.passwordHash);
+      console.log("[LOGIN] Mot de passe valide ?", match);
+  
+      if (!match) {
+        console.log("[LOGIN] ❌ Mot de passe incorrect");
+        return res.status(401).json({ message: 'Mot de passe incorrect' });
+      }
+  
+      if (user.status === 'pending') {
+        console.log("[LOGIN] ❌ Compte en attente");
+        return res.status(403).json({ message: 'Compte en attente', status: 'pending' });
+      }
+  
+      console.log("[LOGIN] ✅ Connexion réussie");
+      return res.status(200).json({
+        message: 'Connexion réussie',
+        status: user.status,
+        role: user.role
+      });
+    } catch (err) {
+      console.error("[LOGIN] 💥 Erreur serveur :", err);
+      return res.status(500).json({ message: 'Erreur serveur' });
+    }
+  });
 
 // LOGOUT — handled client-side or via token blacklist
 router.post("/logout", (req, res) => {
@@ -77,6 +103,5 @@ router.delete("/me", auth, async (req, res) => {
   if (result.deletedCount === 0) return res.status(404).send("Utilisateur introuvable");
   res.sendStatus(204);
 });
-
 
 module.exports = router;
