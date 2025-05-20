@@ -68,6 +68,7 @@ router.post('/login', async (req, res) => {
       }
   
       const match = await bcrypt.compare(mdp, user.passwordHash);
+      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '2h' });
       console.log("[LOGIN] Mot de passe valide ?", match);
   
       if (!match) {
@@ -83,8 +84,13 @@ router.post('/login', async (req, res) => {
       console.log("[LOGIN] ✅ Connexion réussie");
       return res.status(200).json({
         message: 'Connexion réussie',
+        token, 
         status: user.status,
-        role: user.role
+        role: user.role,
+        username: user.username,
+        prenom: user.prenom,
+        nom: user.nom,
+        email: user.email
       });
     } catch (err) {
       console.error("[LOGIN] 💥 Erreur serveur :", err);
@@ -95,6 +101,47 @@ router.post('/login', async (req, res) => {
 // LOGOUT — handled client-side or via token blacklist
 router.post("/logout", (req, res) => {
   res.status(200).send("Déconnexion effectuée côté client");
+});
+
+//POFILE
+router.get("/me", auth, async (req, res) => {
+  const user = await usersCollection.findOne(
+    { _id: new ObjectId(req.user.id) },
+    {
+      projection: {
+        passwordHash: 0, // ne jamais renvoyer le hash
+      },
+    }
+  );
+
+  if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+  res.json(user);
+});
+
+router.patch("/me/photo", auth, async (req, res) => {
+  const { profilePic } = req.body;
+
+  if (!profilePic) return res.status(400).json({ message: "Aucune photo envoyée" });
+
+  await usersCollection.updateOne(
+    { _id: new ObjectId(req.user.id) },
+    { $set: { profilePic } }
+  );
+
+  res.status(200).json({ message: "Photo mise à jour" });
+});
+
+router.patch("/me/bio", auth, async (req, res) => {
+  const { bio } = req.body;
+  if (!bio) return res.status(400).json({ message: "Bio manquante" });
+
+  await usersCollection.updateOne(
+    { _id: new ObjectId(req.user.id) },
+    { $set: { bio } }
+  );
+
+  res.status(200).json({ message: "Bio mise à jour" });
 });
 
 // ADMIN 

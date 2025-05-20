@@ -17,15 +17,18 @@ function LoginForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ login, mdp }),
       });
-  
+    
       const contentType = response.headers.get('content-type');
       const data = contentType?.includes('application/json') ? await response.json() : null;
-  
+    
       if (response.ok) {
-        if (data?.status === 'pending') {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
+        localStorage.setItem("username", data.username);
+    
+        if (data.status === 'pending') {
           navigate('/signup_waiting');
         } else {
-          localStorage.setItem("role", data.role);
           navigate('/homepage');
         }
       } else if (response.status === 403 && data?.status === 'pending') {
@@ -33,6 +36,7 @@ function LoginForm() {
       } else {
         alert(data?.message || 'Erreur de connexion');
       }
+    
     } catch (err) {
       console.error('Erreur réseau:', err);
       alert('Erreur de connexion');

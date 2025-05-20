@@ -9,11 +9,12 @@ import rdr2Logo from '../../assets/rdr2.png';
 
 function Profile() {
   const navigate = useNavigate();
-
+  const [profilePic, setProfilePic] = useState(profileIcon);
   const [userData, setUserData] = useState({
-    username: 'JohnDoe',
-    email: 'johndoe@example.com',
-    registrationDate: '2025-01-15',
+    prenom: '',
+    nom: '',
+    username: '',
+    email: '',
     bio: 'Passionné par les jeux vidéo et le développement web.',
   });
 
@@ -24,21 +25,59 @@ function Profile() {
     'Message 4 : À bientôt !',
   ]);
 
-  const [isMessagesVisible, setIsMessagesVisible] = useState(false); // État pour afficher ou masquer la barre latérale
+  const [isMessagesVisible, setIsMessagesVisible] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const data = {
-        username: 'JohnDoe',
-        email: 'johndoe@example.com',
-        registrationDate: '2025-01-15',
-        bio: 'Passionné par les jeux vidéo et le développement web. Je suis un développeur passionné par la création d\'applications web et mobiles. J\'adore explorer de nouveaux défis et apprendre de nouvelles technologies.',
-      };
-      setUserData(data);
-    };
-
-    fetchUserData();
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:3000/api/me', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setUserData({
+          prenom: data.prenom,
+          nom: data.nom,
+          username: data.username,
+          email: data.email,
+          bio: data.bio || 'Bio non renseignée'
+        });
+        if (data.profilePic) setProfilePic(data.profilePic);
+      })
+      .catch(err => console.error('Erreur récupération profil', err));
   }, []);
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64 = reader.result;
+      setProfilePic(base64);
+  
+      const token = localStorage.getItem('token');
+      try {
+        const res = await fetch('http://localhost:3000/api/me/photo', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ profilePic: base64 })
+        });
+  
+        if (!res.ok) throw new Error("Échec mise à jour photo");
+        console.log("✅ Photo de profil mise à jour !");
+      } catch (err) {
+        console.error("❌ Erreur MAJ photo:", err);
+        alert("Erreur lors de la sauvegarde de la photo.");
+      }
+    };
+  
+    reader.readAsDataURL(file);
+  };
 
   const handleBackToHome = () => {
     navigate('/homepage');
@@ -49,7 +88,26 @@ function Profile() {
   };
 
   const toggleMessages = () => {
-    setIsMessagesVisible(!isMessagesVisible); // Bascule l'état d'affichage de la barre latérale
+    setIsMessagesVisible(!isMessagesVisible);
+  };
+  const handleSaveBio = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch('http://localhost:3000/api/me/bio', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ bio: userData.bio })
+      });
+  
+      if (!res.ok) throw new Error("Erreur lors de la mise à jour");
+      alert("Bio mise à jour !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la mise à jour");
+    }
   };
 
   return (
@@ -70,7 +128,7 @@ function Profile() {
 
           <div className="login_register">
             <img
-              src={profileIcon}
+              src={profilePic}
               alt="Profil"
               className="icon-button"
               onClick={() => navigate('/profile')}
@@ -94,13 +152,19 @@ function Profile() {
       {/* Profil */}
       <div className="profile-container">
         {/* Photo de profil */}
-        <img src={profileIcon} alt="Photo de profil" className="profile-logo" />
+        <img src={profilePic} alt="Photo de profil" className="profile-logo" />
+        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+
         <h1>Profil de l'utilisateur</h1>
         <div className="profile-info">
           <p><strong>Pseudo :</strong> {userData.username}</p>
-          <p><strong>Email :</strong> {userData.email}</p>
-          <p><strong>Date d'inscription :</strong> {userData.registrationDate}</p>
-          <p><strong>Bio :</strong> {userData.bio}</p>
+          <label><strong>Bio :</strong></label>
+          <textarea
+            value={userData.bio}
+            onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+            rows={4}
+          />
+          <button onClick={handleSaveBio}>Enregistrer la bio</button>
         </div>
 
         {/* Bouton pour afficher/masquer les messages */}
