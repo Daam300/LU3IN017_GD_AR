@@ -25,6 +25,7 @@ function LoginForm() {
         if (data?.status === 'pending') {
           navigate('/signup_waiting');
         } else {
+          localStorage.setItem("role", data.role);
           navigate('/homepage');
         }
       } else if (response.status === 403 && data?.status === 'pending') {

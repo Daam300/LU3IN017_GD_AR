@@ -7,7 +7,7 @@ import Homepage from './pages/code/homepage';
 import SignupWaiting from './pages/code/signup_waiting';
 import Parameter from './pages/code/parameter';
 import Profile from './pages/code/Profile';
-
+import Admin from './pages/code/Admin';
 function App() {
   return (
     <Router>
@@ -19,6 +19,7 @@ function App() {
         <Route path="/signup_waiting" element={<SignupWaiting />} />
         <Route path="/parameter" element={<Parameter />} /> {/* Ajout de la route */}
         <Route path="/profile" element={<Profile />} /> {/* Ajout de la route pour le profil */}
+        <Route path="/admin" element={<Admin />} /> {/* Ajout de la route pour l'administration */}
       </Routes>
     </Router>
   );

@@ -97,6 +97,47 @@ router.post("/logout", (req, res) => {
   res.status(200).send("Déconnexion effectuée côté client");
 });
 
+// ADMIN 
+router.get('/users/pending', async (req, res) => {
+  const users = await usersCollection.find({ status: 'pending' }).toArray();
+  res.json(users);
+});
+
+router.get('/users/approved', async (req, res) => {
+  const users = await usersCollection.find({ status: 'approved' }).toArray();
+  res.json(users);
+});
+
+router.post('/users/validate/:id', async (req, res) => {
+  const { id } = req.params;
+  const { action } = req.body;
+
+  const status = action === 'approve' ? 'approved' : 'refused';
+
+  await usersCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { status } }
+  );
+
+  res.sendStatus(200);
+});
+
+router.post('/users/toggleAdmin/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await usersCollection.findOne({ _id: new ObjectId(id) });
+  if (!user) return res.status(404).send("Utilisateur introuvable");
+
+  const newRole = user.role === 'admin' ? 'user' : 'admin';
+
+  await usersCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { role: newRole } }
+  );
+
+  res.sendStatus(200);
+});
+
 // DELETE ACCOUNT
 router.delete("/me", auth, async (req, res) => {
   const result = await usersCollection.deleteOne({ _id: new ObjectId(req.user.id) });
