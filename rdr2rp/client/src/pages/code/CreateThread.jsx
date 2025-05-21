@@ -1,0 +1,62 @@
+// client/src/pages/code/CreateThread.jsx
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../visual/create-thread.css';
+function CreateThread() {
+  const [titre, setTitre] = useState('');
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  const [description, setDescription] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const auteur = localStorage.getItem('username');
+    const res = await fetch('http://localhost:3000/api/forum/thread', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ titre, auteur, description, message }),
+    });
+
+    if (res.ok) {
+      navigate('/homepage');
+    } else {
+      alert("Erreur création du sujet.");
+    }
+  };
+
+  return (
+    <div className="create-thread-container">
+      <h2>Créer un nouveau sujet</h2>
+      <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Titre du sujet"
+        value={titre}
+        onChange={(e) => setTitre(e.target.value)}
+        required
+        />
+        <textarea
+        className="message-box"
+        placeholder="Description "
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={3}
+        required
+        />
+        <textarea
+        placeholder="Message principal"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows={8}
+        className="message-box"
+        required
+        />
+        <button type="submit">Publier</button>
+      </form>
+    </div>
+  );
+}
+
+export default CreateThread;
