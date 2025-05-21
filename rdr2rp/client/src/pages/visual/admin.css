@@ -1,0 +1,63 @@
+.admin-container {
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+  background-color: #121212; /* Noir profond */
+  color: #e0c097; /* Or */
+}
+
+.return-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  filter: invert(77%) sepia(12%) saturate(294%) hue-rotate(357deg) brightness(94%) contrast(85%); /* Convertit l'icône en or */
+}
+
+.admin-content {
+  display: flex;
+  gap: 10rem;
+}
+
+.pending-users,
+.approved-users {
+  flex: 1;
+  background-color: #2e2e2e; /* Gris foncé pour les cartes */
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre plus prononcée */
+}
+
+.pending-users h2,
+.approved-users h2 {
+  color: #e0c097; /* Titres en or */
+}
+
+.user-card {
+  margin-bottom: 1rem;
+  border: 1px solid #333; /* Bordure grise foncée */
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.user-card strong {
+  color: #fff; /* Nom d'utilisateur en blanc */
+}
+
+.approve-button,
+.refuse-button,
+.toggle-admin-button {
+  background-color: #b22222; /* Rouge foncé */
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.approve-button:hover,
+.refuse-button:hover,
+.toggle-admin-button:hover {
+  background-color: #800000; /* Rouge encore plus foncé au survol */
+}

@@ -141,7 +141,7 @@ function Profile() {
         <BackgroundSlideshow />
         <div className="header-content">
           <div className="logo1">
-            <img src={rdr2Logo} alt="Red Dead Redemption 2" />
+            <img src={rdr2Logo} alt="Red Dead Redemption 2" onClick={handleBackToHome} style={{cursor: 'pointer'}}/>
           </div>
 
           <div className="search1">

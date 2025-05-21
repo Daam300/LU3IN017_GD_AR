@@ -11,7 +11,6 @@ import adminIcon from '../../assets/admin.png';
 
 
 function Homepage() {
-
   const navigate = useNavigate();
 
   const [isAdmin, setIsAdmin] = useState(false);

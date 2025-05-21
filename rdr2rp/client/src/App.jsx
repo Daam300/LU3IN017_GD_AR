@@ -8,6 +8,8 @@ import SignupWaiting from './pages/code/signup_waiting';
 import Parameter from './pages/code/parameter';
 import Profile from './pages/code/Profile';
 import Admin from './pages/code/Admin';
+import Forum from './pages/code/forum';
+
 function App() {
   return (
     <Router>
@@ -20,6 +22,7 @@ function App() {
         <Route path="/parameter" element={<Parameter />} /> {/* Ajout de la route */}
         <Route path="/profile" element={<Profile />} /> {/* Ajout de la route pour le profil */}
         <Route path="/admin" element={<Admin />} /> {/* Ajout de la route pour l'administration */}
+        <Route path="/forum/:forumId" element={<Forum />} /> {/* Route pour le forum avec un paramètre d'ID */}
       </Routes>
     </Router>
   );

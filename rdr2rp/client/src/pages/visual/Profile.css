@@ -23,6 +23,11 @@
   width: 100px; /* Taille du logo */
   height: auto;
   border-radius: 8px;
+  transition: transform 0.3s ease-in-out; /* Ajoute une transition pour une animation fluide */
+}
+
+.logo1 img:hover {
+  transform: scale(1.1); /* Agrandit légèrement le logo au survol */
 }
 
 .search1 form {

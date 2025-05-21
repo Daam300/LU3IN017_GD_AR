@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import returnIcon from '../../assets/return.png';
+import '../visual/Admin.css'; // Import du fichier CSS
+
 function Admin() {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [approvedUsers, setApprovedUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null); // optionnel pour bloquer sa propre édition
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     fetchPendingUsers();
     fetchApprovedUsers();
     const role = localStorage.getItem("role");
-    const username = localStorage.getItem("username"); // stocké au login
+    const username = localStorage.getItem("username");
     setCurrentUser(username);
   }, []);
 
@@ -30,7 +33,7 @@ function Admin() {
     await fetch(`http://localhost:3000/api/users/validate/${id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action }) // 'approve' ou 'refuse'
+      body: JSON.stringify({ action })
     });
     fetchPendingUsers();
   };
@@ -44,39 +47,34 @@ function Admin() {
   };
 
   return (
-    <div>
+    <div className="admin-container">
       <img
         src={returnIcon}
         alt="Retour"
         onClick={() => navigate('/homepage')}
-        style={{
-          width: '30px',
-          height: '30px',
-          cursor: 'pointer',
-          marginBottom: '1rem'
-        }}
+        className="return-icon"
       />
-      <div style={{ display: 'flex', padding: '2rem', gap: '2rem' }}>
+      <div className="admin-content">
         {/* Utilisateurs en attente */}
-        <div style={{ flex: 1 }}>
+        <div className="pending-users">
           <h2>Inscriptions en attente</h2>
           {pendingUsers.map(user => (
-            <div key={user._id} style={{ marginBottom: '1rem', border: '1px solid #ccc', padding: '1rem' }}>
+            <div key={user._id} className="user-card">
               <strong>{user.username}</strong> ({user.email})<br />
-              <button onClick={() => updateStatus(user._id, 'approve')}>✅ Accepter</button>
-              <button onClick={() => updateStatus(user._id, 'refuse')}>❌ Refuser</button>
+              <button onClick={() => updateStatus(user._id, 'approve')} className="approve-button">✅ Accepter</button>
+              <button onClick={() => updateStatus(user._id, 'refuse')} className="refuse-button">❌ Refuser</button>
             </div>
           ))}
         </div>
-  
+
         {/* Utilisateurs approuvés */}
-        <div style={{ flex: 1 }}>
+        <div className="approved-users">
           <h2>Utilisateurs actifs</h2>
           {approvedUsers.map(user => (
-            <div key={user._id} style={{ marginBottom: '1rem', border: '1px solid #ccc', padding: '1rem' }}>
+            <div key={user._id} className="user-card">
               <strong>{user.username}</strong> ({user.role})<br />
               {user.username !== currentUser && (
-                <button onClick={() => toggleAdmin(user._id, user.role)}>
+                <button onClick={() => toggleAdmin(user._id, user.role)} className="toggle-admin-button">
                   {user.role === 'admin' ? 'Retirer admin' : 'Rendre admin'}
                 </button>
               )}
@@ -87,4 +85,5 @@ function Admin() {
     </div>
   );
 }
+
 export default Admin;

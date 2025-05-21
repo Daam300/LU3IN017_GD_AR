@@ -335,6 +335,11 @@
   .logo1 img {
     width: 200px !important; /* Taille du logo */
     height: auto !important;
+    transition: transform 0.3s ease-in-out; /* Ajoute une transition pour une animation fluide */
+  }
+
+  .logo1 img:hover {
+    transform: scale(1.1); /* Agrandit légèrement le logo au survol */
   }
 
   .forum-section {
@@ -358,6 +363,12 @@
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #e0c097;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Ajout de la transition */
+}
+
+.forum-post:hover {
+  transform: scale(1.03); /* Légère augmentation de la taille */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Ombre plus prononcée */
 }
 
 .forum-post h3 {
