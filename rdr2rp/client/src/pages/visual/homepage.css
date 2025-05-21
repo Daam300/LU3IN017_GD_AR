@@ -343,3 +343,17 @@
   margin: 5px 0;
   color: #ccc;
 }
+
+.create-thread-btn {
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #8b0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.create-thread-btn:hover {
+  background-color: #a52a2a;
+}

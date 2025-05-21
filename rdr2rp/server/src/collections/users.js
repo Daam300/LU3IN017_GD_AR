@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
       }
   
       const match = await bcrypt.compare(mdp, user.passwordHash);
-      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '2h' });
+      const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
       console.log("[LOGIN] Mot de passe valide ?", match);
   
       if (!match) {

@@ -7,11 +7,19 @@ function Admin() {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [approvedUsers, setApprovedUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [threads, setThreads] = useState([]);
   const navigate = useNavigate();
+
+  const fetchThreads = async () => {
+    const res = await fetch('http://localhost:3000/api/forum/threads');
+    const data = await res.json();
+    setThreads(data);
+  };
 
   useEffect(() => {
     fetchPendingUsers();
     fetchApprovedUsers();
+    fetchThreads();
     const role = localStorage.getItem("role");
     const username = localStorage.getItem("username");
     setCurrentUser(username);
@@ -22,7 +30,21 @@ function Admin() {
     const data = await res.json();
     setPendingUsers(data);
   };
-
+  const deleteThread = async (threadId) => {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`http://localhost:3000/api/forum/thread/${threadId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  
+    if (res.ok) {
+      fetchThreads(); // rafraîchir la liste
+    } else {
+      alert("Erreur lors de la suppression du thread.");
+    }
+  };
   const fetchApprovedUsers = async () => {
     const res = await fetch('http://localhost:3000/api/users/approved');
     const data = await res.json();
@@ -78,6 +100,17 @@ function Admin() {
                   {user.role === 'admin' ? 'Retirer admin' : 'Rendre admin'}
                 </button>
               )}
+            </div>
+          ))}
+        </div>
+        <div className="forum-admin">
+          <h2>Gestion des forums</h2>
+          {threads.map(thread => (
+            <div key={thread._id} className="user-card">
+              <strong>{thread.titre}</strong> — {thread.auteur}<br />
+              <button onClick={() => deleteThread(thread._id)} className="refuse-button">
+                🗑 Supprimer
+              </button>
             </div>
           ))}
         </div>

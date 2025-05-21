@@ -26,21 +26,20 @@ function Homepage() {
   const handleLogout = () => {
     navigate('/');
   };
+  const [forums, setForums] = useState([]);
 
-  const forums = [
-    {
-      id: 1,
-      title: "Présentation de votre personnage",
-      author: "JohnDoe",
-      date: "2025-05-21"
-    },
-    {
-      id: 2,
-      title: "Suggestions pour le serveur",
-      author: "JaneSmith",
-      date: "2025-05-20"
-    }
-  ];
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    setIsAdmin(role === "admin");
+  
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme === 'dark' ? 'dark-mode' : 'light-mode';
+  
+    fetch("http://localhost:3000/api/forum/threads")
+      .then(res => res.json())
+      .then(data => setForums(data))
+      .catch(err => console.error("Erreur de chargement des forums", err));
+  }, []);
 
   const goToForum = (forumId) => {
     navigate(`/forum/${forumId}`);
@@ -106,20 +105,23 @@ function Homepage() {
         {/* Section Forum */}
         <section className="forum-section">
           <h2>Forums récents</h2>
+          <button onClick={() => navigate('/create-thread')} className="create-thread-btn">
+            Créer un nouveau sujet
+          </button>
           <div className="forum-list">
-            {forums.map((forum) => (
-              <div
-                className="forum-post"
-                key={forum.id}
-                onClick={() => goToForum(forum.id)}
-                style={{ cursor: 'pointer' }}
-              >
-                <h3>{forum.title}</h3>
-                <p><strong>Auteur :</strong> {forum.author}</p>
-                <p><strong>Date :</strong> {new Date(forum.date).toLocaleDateString()}</p>
-              </div>
-            ))}
-          </div>
+          {forums.map((forum) => (
+            <div
+              className="forum-post"
+              key={forum._id}
+              onClick={() => goToForum(forum._id)}
+              style={{ cursor: 'pointer' }}
+            >
+              <h3>{forum.titre}</h3>
+              <p><strong>Auteur :</strong> {forum.auteur}</p>
+              <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
+            </div>
+          ))}
+        </div>
         </section>
       </main>
     </div>

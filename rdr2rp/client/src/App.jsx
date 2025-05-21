@@ -9,6 +9,7 @@ import Parameter from './pages/code/parameter';
 import Profile from './pages/code/Profile';
 import Admin from './pages/code/Admin';
 import Forum from './pages/code/forum';
+import CreateThread from './pages/code/CreateThread';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/profile" element={<Profile />} /> {/* Ajout de la route pour le profil */}
         <Route path="/admin" element={<Admin />} /> {/* Ajout de la route pour l'administration */}
         <Route path="/forum/:forumId" element={<Forum />} /> {/* Route pour le forum avec un paramètre d'ID */}
+        <Route path="/create-thread" element={<CreateThread />} />
       </Routes>
     </Router>
   );

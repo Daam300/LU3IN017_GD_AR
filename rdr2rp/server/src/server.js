@@ -8,6 +8,8 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+const forumRoutes = require('./collections/forum');
+app.use('/api/forum', forumRoutes);
 const userRoutes = require('./collections/users');
 app.use('/api', userRoutes);
 require('./services/api.js').then((apiRoutes) => {
