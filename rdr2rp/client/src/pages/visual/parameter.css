@@ -19,6 +19,7 @@ body.dark-mode {
   color: inherit; /* Hérite de la couleur du texte du body */
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  color : white;
 }
 
 .parameter-container h1 {
