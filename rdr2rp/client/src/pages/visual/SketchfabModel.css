@@ -1,0 +1,16 @@
+/* src/components/SketchfabModel.css */
+
+.sketchfab-embed-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(224, 192, 151, 0.2);
+}
+
+.sketchfab-embed-wrapper iframe {
+  width: 100%;
+  height: 480px;
+  border: none;
+}

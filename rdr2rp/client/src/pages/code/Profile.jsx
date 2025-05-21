@@ -6,6 +6,7 @@ import profileIcon from '../../assets/profile.png';
 import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
 import rdr2Logo from '../../assets/rdr2.png';
+import SketchfabModel from './SketchfabModel'; // 👈 import du modèle Sketchfab
 
 function Profile() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ function Profile() {
   ]);
 
   const [isMessagesVisible, setIsMessagesVisible] = useState(false);
+  const [characterBio, setCharacterBio] = useState('Biographie du personnage non renseignée.');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -51,12 +53,12 @@ function Profile() {
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     const reader = new FileReader();
     reader.onloadend = async () => {
       const base64 = reader.result;
       setProfilePic(base64);
-  
+
       const token = localStorage.getItem('token');
       try {
         const res = await fetch('http://localhost:3000/api/me/photo', {
@@ -67,7 +69,7 @@ function Profile() {
           },
           body: JSON.stringify({ profilePic: base64 })
         });
-  
+
         if (!res.ok) throw new Error("Échec mise à jour photo");
         console.log("✅ Photo de profil mise à jour !");
       } catch (err) {
@@ -75,7 +77,7 @@ function Profile() {
         alert("Erreur lors de la sauvegarde de la photo.");
       }
     };
-  
+
     reader.readAsDataURL(file);
   };
 
@@ -90,6 +92,7 @@ function Profile() {
   const toggleMessages = () => {
     setIsMessagesVisible(!isMessagesVisible);
   };
+
   const handleSaveBio = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -101,7 +104,7 @@ function Profile() {
         },
         body: JSON.stringify({ bio: userData.bio })
       });
-  
+
       if (!res.ok) throw new Error("Erreur lors de la mise à jour");
       alert("Bio mise à jour !");
     } catch (err) {
@@ -150,32 +153,49 @@ function Profile() {
       </header>
 
       {/* Profil */}
-      <div className="profile-container">
-        {/* Photo de profil */}
-        <img src={profilePic} alt="Photo de profil" className="profile-logo" />
-        <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+      <div className="profile-layout">
+        <aside className="profile-sidebar">
+          <img src={profilePic} alt="Photo de profil" className="profile-logo" />
+          <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+          <h1>Profil de l'utilisateur</h1>
+          <div className="profile-info">
+            <p><strong>Pseudo :</strong> {userData.username}</p>
+            <label><strong>Bio :</strong></label>
+            <textarea
+              value={userData.bio}
+              onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+              rows={4}
+            />
+            <button onClick={handleSaveBio}>Enregistrer la bio</button>
+          </div>
+          <div className="messages-toggle">
+            <button onClick={toggleMessages}>Messages envoyés</button>
+          </div>
+          <button className="back-button" onClick={handleBackToHome}>
+            Retour à l'accueil
+          </button>
+        </aside>
+        <main className="profile-main-content">
+          <div className="profile-content">
+            {/* Ajout du conteneur pour le modèle 3D et la biographie */}
+            <div className="model-bio-container">
+              {/* Modèle 3D */}
+              <div className="sketchfab-model-container">
+                <SketchfabModel />
+              </div>
 
-        <h1>Profil de l'utilisateur</h1>
-        <div className="profile-info">
-          <p><strong>Pseudo :</strong> {userData.username}</p>
-          <label><strong>Bio :</strong></label>
-          <textarea
-            value={userData.bio}
-            onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
-            rows={4}
-          />
-          <button onClick={handleSaveBio}>Enregistrer la bio</button>
-        </div>
-
-        {/* Bouton pour afficher/masquer les messages */}
-        <div className="messages-toggle">
-          <button onClick={toggleMessages}>Messages envoyés</button>
-        </div>
-
-        {/* Bouton pour retourner à l'accueil */}
-        <button className="back-button" onClick={handleBackToHome}>
-          Retour à l'accueil
-        </button>
+              {/* Biographie du personnage */}
+              <div className="character-bio-section">
+                <label htmlFor="characterBio">Biographie du Personnage :</label>
+                <textarea
+                  id="characterBio"
+                  value={characterBio}
+                  onChange={(e) => setCharacterBio(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
 
       {/* Barre latérale des messages */}

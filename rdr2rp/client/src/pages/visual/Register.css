@@ -18,6 +18,11 @@ body {
   position: relative;
 }
 
+/* Réduction de la taille de police globale pour la page d'inscription */
+body, input, button, label, p, span, div {
+  font-size: 0.5rem !important;
+}
+
 /* Conteneur du diaporama */
 .background-slideshow {
   position: fixed;
@@ -61,10 +66,17 @@ body {
 }
 
 /* Titre principal */
+h1 {
+  margin-bottom: 20px;
+  color: #e0c097;
+  font-size: 30px !important;
+  text-transform: uppercase;
+}
+
 h2 {
   margin-bottom: 20px;
   color: #e0c097;
-  font-size: 2rem;
+  font-size: 1rem;
   text-transform: uppercase;
 }
 
@@ -72,14 +84,13 @@ h2 {
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
 }
 
 .register-form label {
   text-align: left;
   color: #e0c097;
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .register-form input {
@@ -95,26 +106,25 @@ h2 {
   outline: 2px solid #e0c097;
 }
 
-/* Boutons */
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
 
-.button-group button {
-  background-color: #121212;
-  color: #e0c097;
+.buttons button {
+  background: #b22222 !important; /* Rouge foncé */
+  color: white;
+  font-family: 'CustomFont', cursive;
+  font-size: 0.8rem !important;
+  font-weight: bold;
+  text-transform: uppercase;
   border: none;
-  padding: 10px 20px;
+  padding: 15px 25px;
   border-radius: 6px;
   cursor: pointer;
-  font-family: 'CustomFont', cursive;
-  text-transform: uppercase;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin: 5px;
 }
 
-.button-group button:hover {
-  background-color: #800001;
-  transform: scale(1.05);
+.buttons button:hover {
+  opacity: 0.8;
+  transform: scale(1);
+  background: #ff0000 !important; /* Rouge vif au survol */
+  color: white;
 }

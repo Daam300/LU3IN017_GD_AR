@@ -63,7 +63,7 @@ function Register() {
   return (
     <div className="register-container">
       <BackgroundSlideshow />
-      <h2>Page d'Inscription</h2>
+      <h1>Page d'Inscription</h1>
       <form className="register-form" onSubmit={handleSubmit}>
         <label htmlFor="prenom">Prénom</label>
         <input
@@ -116,7 +116,7 @@ function Register() {
           name="mdp"
           type="password"
           value={mdp}
-          onChange={e => setMdp(e.target.value)}
+          onChange={e => setMdp(e.target.value)} 
         />
 
         <label htmlFor="mp2">Retapez le mot de passe</label>
@@ -128,7 +128,7 @@ function Register() {
           onChange={e => setConfirmMdp(e.target.value)}
         />
 
-        <div className="button-group">
+        <div className="buttons">
           <button type="submit">Inscription</button>
           <button type="button" onClick={handleCancel}>Annuler</button>
         </div>

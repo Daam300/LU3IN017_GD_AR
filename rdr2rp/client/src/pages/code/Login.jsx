@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BackgroundSlideshow from './BackgroundSlideshow';
-import '../visual/Login.css'; // Mise à jour du chemin vers le CSS
+import '../visual/login.css'; // Mise à jour du chemin vers le CSS
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ function LoginForm() {
           onChange={e => setMdp(e.target.value)}
         />
 
-        <div className="button-group">
+        <div className="buttons">
           <button type="submit">Connexion</button>
           <button onClick={handleCancel}>Annuler</button>
         </div>
