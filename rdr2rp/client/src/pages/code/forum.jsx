@@ -6,6 +6,7 @@ import backgroundImage from '../../assets/rdr2.png';
 import profileIcon from '../../assets/profile.png';
 import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
+import adminIcon from '../../assets/admin.png'; // Import de l'icône admin
 function Forum() {
   const { forumId } = useParams();
   const [thread, setThread] = useState(null);
@@ -80,6 +81,15 @@ function Forum() {
               className="icon-button"
               onClick={() => window.location.href = '/parameter'}
             />
+            {localStorage.getItem("role") === "admin" && (
+              <img
+                src={adminIcon}
+                alt="Admin"
+                className="icon-button"
+                onClick={() => window.location.href = '/admin'}
+                title="Admin Panel"
+              />
+            )}
             <img
               src={logoutIcon}
               alt="Déconnexion"

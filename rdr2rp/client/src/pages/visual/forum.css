@@ -59,15 +59,25 @@
   text-align: right;
 }
 
+.quoted-text::before {
+  content: 'Citation :';
+  font-weight: bold;
+  color: #c2955b;
+  margin-bottom: 0.3rem;
+}
 .quoted-text {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 0.75rem;
-  border-left: 4px solid #ccc;
-  background-color: #2e2e2e;
-  color: #aaa;
-  font-style: italic;
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #c2955b;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #d0cfcf;
   white-space: pre-wrap;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .main-content h1 {
@@ -87,5 +97,36 @@
 }
 .message-actions .delete-button:hover {
   color: red;
+}
+
+.reply-to-quote {
+  width: 100%;
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #1c1c1c;
+  border: 2px solid #c2955b;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  color: #d3cfc7;
+  font-size: 0.9rem;
+  box-shadow: 0 0 5px rgba(255, 215, 160, 0.2);
+  white-space: pre-wrap;
+}
+
+.reply-to-quote em {
+  display: block;
+  color: #e0c097;
+  font-style: normal;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.reply-to-quote .quoted-text::before {
+  content: "Citation :";
+  display: block;
+  font-weight: bold;
+  color: #c2955b;
+  margin-bottom: 0.4rem;
 }
 
