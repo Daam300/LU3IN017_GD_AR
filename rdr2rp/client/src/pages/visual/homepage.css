@@ -331,3 +331,42 @@
   body.dark-mode .sidebar p {
     color: #e0c097; /* Titre et texte en clair */
   }
+
+  .logo1 img {
+    width: 200px !important; /* Taille du logo */
+    height: auto !important;
+  }
+
+  .forum-section {
+  margin-top: 30px;
+}
+
+.forum-section h2 {
+  color: #e0c097;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.forum-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.forum-post {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0c097;
+}
+
+.forum-post h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #e0c097;
+}
+
+.forum-post p {
+  margin: 5px 0;
+  color: #ccc;
+}

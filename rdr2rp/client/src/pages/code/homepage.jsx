@@ -28,6 +28,25 @@ function Homepage() {
     navigate('/');
   };
 
+  const forums = [
+    {
+      id: 1,
+      title: "Présentation de votre personnage",
+      author: "JohnDoe",
+      date: "2025-05-21"
+    },
+    {
+      id: 2,
+      title: "Suggestions pour le serveur",
+      author: "JaneSmith",
+      date: "2025-05-20"
+    }
+  ];
+
+  const goToForum = (forumId) => {
+    navigate(`/forum/${forumId}`);
+  };
+
   return (
     <div className="page-container">
       <header className="header-container">
@@ -84,6 +103,25 @@ function Homepage() {
 
       <main className="main-content">
         <h1>Bienvenue sur RDR2RP !</h1>
+
+        {/* Section Forum */}
+        <section className="forum-section">
+          <h2>Forums récents</h2>
+          <div className="forum-list">
+            {forums.map((forum) => (
+              <div
+                className="forum-post"
+                key={forum.id}
+                onClick={() => goToForum(forum.id)}
+                style={{ cursor: 'pointer' }}
+              >
+                <h3>{forum.title}</h3>
+                <p><strong>Auteur :</strong> {forum.author}</p>
+                <p><strong>Date :</strong> {new Date(forum.date).toLocaleDateString()}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );
