@@ -249,7 +249,7 @@
   position: fixed;
   top: 200px; /* Aligne avec le bas du header */
   right: -500px; /* Masque la barre latérale en dehors de l'écran */
-  width: 500px; /* Augmente la largeur de la barre latérale */
+  width: 530px; /* Augmente la largeur de la barre latérale */
   height: calc(100vh - 200px); /* Hauteur de la barre latérale (exclut le header) */
   background-color: #2e2e2e; /* Couleur de fond */
   color: #e0c097; /* Couleur du texte */
@@ -429,7 +429,7 @@
 /* Style pour la biographie */
 .character-bio-section {
   width: 10%;
-  padding: 10px;
+  padding: 30px;
   box-sizing: border-box;
   order: 2; /* Place la biographie à droite */
   margin-left: 110px; /* Pousse la biographie vers la droite */

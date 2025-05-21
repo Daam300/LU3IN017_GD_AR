@@ -113,6 +113,27 @@ function Profile() {
     }
   };
 
+  const handleSaveCharacterBio = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      // Envoie la bio du personnage au serveur
+      const res = await fetch('http://localhost:3000/api/me/character-bio', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ characterBio: characterBio })
+      });
+
+      if (!res.ok) throw new Error("Erreur lors de la mise à jour de la bio du personnage");
+      alert("Bio du personnage mise à jour !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la mise à jour de la bio du personnage");
+    }
+  };
+
   return (
     <div className="page-container">
       {/* Header */}
@@ -186,12 +207,13 @@ function Profile() {
 
               {/* Biographie du personnage */}
               <div className="character-bio-section">
-                <label htmlFor="characterBio">Biographie du Personnage :</label>
                 <textarea
                   id="characterBio"
                   value={characterBio}
                   onChange={(e) => setCharacterBio(e.target.value)}
                 />
+                {/* Ajout du bouton pour enregistrer la bio du personnage */}
+                <button onClick={handleSaveCharacterBio}>Enregistrer la bio du personnage</button>
               </div>
             </div>
           </div>
