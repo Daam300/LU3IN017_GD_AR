@@ -45,7 +45,7 @@ function Profile() {
           email: data.email,
           bio: data.bio || 'Bio non renseignée'
         });
-        if (data.profilePic) setProfilePic(data.profilePic);
+        setProfilePic(data.profilePic || profileIcon);
       })
       .catch(err => console.error('Erreur récupération profil', err));
   }, []);
@@ -53,31 +53,57 @@ function Profile() {
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
+  
     const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64 = reader.result;
-      setProfilePic(base64);
-
-      const token = localStorage.getItem('token');
-      try {
-        const res = await fetch('http://localhost:3000/api/me/photo', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ profilePic: base64 })
-        });
-
-        if (!res.ok) throw new Error("Échec mise à jour photo");
-        console.log("✅ Photo de profil mise à jour !");
-      } catch (err) {
-        console.error("❌ Erreur MAJ photo:", err);
-        alert("Erreur lors de la sauvegarde de la photo.");
-      }
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        const maxSize = 300;
+        let width = img.width;
+        let height = img.height;
+  
+        if (width > height) {
+          if (width > maxSize) {
+            height *= maxSize / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width *= maxSize / height;
+            height = maxSize;
+          }
+        }
+  
+        canvas.width = width;
+        canvas.height = height;
+  
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const base64 = canvas.toDataURL('image/jpeg', 0.8); // compression jpeg
+  
+        setProfilePic(base64);
+  
+        const token = localStorage.getItem('token');
+        try {
+          const res = await fetch('http://localhost:3000/api/me/photo', {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ profilePic: base64 })
+          });
+  
+          if (!res.ok) throw new Error("Échec mise à jour photo");
+          console.log("✅ Photo de profil mise à jour !");
+        } catch (err) {
+          console.error("❌ Erreur MAJ photo:", err);
+          alert("Erreur lors de la sauvegarde de la photo.");
+        }
+      };
+      img.src = reader.result;
     };
-
     reader.readAsDataURL(file);
   };
 

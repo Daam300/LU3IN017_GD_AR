@@ -8,6 +8,8 @@ const router = express.Router();
 const JWT_SECRET = "votre_secret_jwt"; // À stocker de manière sécurisée
 const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 let usersCollection;
 console.log("[API] /api/users/register prêt !");
 client.connect().then(() => {
@@ -122,14 +124,21 @@ router.get("/me", auth, async (req, res) => {
 router.patch("/me/photo", auth, async (req, res) => {
   const { profilePic } = req.body;
 
+  console.log("[PHOTO] Reçu : ", profilePic?.substring(0, 30));
+  console.log("[PHOTO] User ID : ", req.user?.id);
+
   if (!profilePic) return res.status(400).json({ message: "Aucune photo envoyée" });
 
-  await usersCollection.updateOne(
-    { _id: new ObjectId(req.user.id) },
-    { $set: { profilePic } }
-  );
-
-  res.status(200).json({ message: "Photo mise à jour" });
+  try {
+    await usersCollection.updateOne(
+      { _id: new ObjectId(req.user.id) },
+      { $set: { profilePic } }
+    );
+    res.status(200).json({ message: "Photo mise à jour" });
+  } catch (err) {
+    console.error("[PHOTO] ❌ Erreur DB :", err);
+    res.status(500).json({ message: "Erreur base de données" });
+  }
 });
 
 router.patch("/me/bio", auth, async (req, res) => {

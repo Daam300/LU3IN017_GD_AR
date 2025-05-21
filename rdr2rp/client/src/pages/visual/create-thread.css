@@ -26,7 +26,8 @@
   border-radius: 8px;
   background-color: var(--input-bg, #f7f7f7);
   color: var(--text-color, #000);
-  font-size: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.4;
 }
 
 .create-thread-container textarea.message-box {
@@ -43,8 +44,9 @@
   color: #fff;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 400;
   font-size: 1.1rem;
+  font-family: 'Segoe UI', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
@@ -59,4 +61,21 @@ body.dark-mode {
   --border-color: #333;
   --input-bg: #2a2a2a;
   --input-border: #444;
+}
+
+
+/* Uniformiser police pour tous les champs */
+.create-thread-container input,
+.create-thread-container textarea {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* Harmoniser les placeholders */
+.create-thread-container input::placeholder,
+.create-thread-container textarea::placeholder {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.1rem;
+  color: #aaa;
 }
