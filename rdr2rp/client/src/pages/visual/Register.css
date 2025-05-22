@@ -52,10 +52,11 @@ body, input, button, label, p, span, div {
 /* Formulaire d'inscription */
 .register-container {
   background-color: rgba(0, 0, 0, 0.85); /* Arrière-plan semi-transparent pour mieux voir l'overlay */
-  padding: 40px;
+  padding: 24px;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
-  width: 400px;
+  width: 320px;
+  max-width: 95vw;
   text-align: center;
   z-index: 1; /* S'assurer que le formulaire reste au-dessus du fond */
   position: relative;
@@ -69,7 +70,7 @@ body, input, button, label, p, span, div {
 h1 {
   margin-bottom: 20px;
   color: #e0c097;
-  font-size: 30px !important;
+  font-size: 1.1rem !important;
   text-transform: uppercase;
 }
 
