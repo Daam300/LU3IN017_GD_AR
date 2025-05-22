@@ -61,3 +61,33 @@
 .toggle-admin-button:hover {
   background-color: #800000; /* Rouge encore plus foncé au survol */
 }
+
+/* ✅ Scroll pour chaque section */
+.pending-users,
+.approved-users,
+.forum-admin {
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #e0c097 #2e2e2e;
+}
+
+/* Amélioration esthétique du scroll */
+.pending-users::-webkit-scrollbar,
+.approved-users::-webkit-scrollbar,
+.forum-admin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.pending-users::-webkit-scrollbar-thumb,
+.approved-users::-webkit-scrollbar-thumb,
+.forum-admin::-webkit-scrollbar-thumb {
+  background-color: #e0c097;
+  border-radius: 3px;
+}
+
+.pending-users::-webkit-scrollbar-track,
+.approved-users::-webkit-scrollbar-track,
+.forum-admin::-webkit-scrollbar-track {
+  background: #2e2e2e;
+}

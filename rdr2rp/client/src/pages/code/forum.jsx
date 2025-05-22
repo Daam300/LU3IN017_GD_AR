@@ -1,55 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../visual/forum.css';
 import BackgroundSlideshow from './BackgroundSlideshow';
 import backgroundImage from '../../assets/rdr2.png';
 import profileIcon from '../../assets/profile.png';
 import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
-import adminIcon from '../../assets/admin.png'; // Import de l'icône admin
+import adminIcon from '../../assets/admin.png';
+
 function Forum() {
   const { forumId } = useParams();
+  const navigate = useNavigate();
   const [thread, setThread] = useState(null);
   const [replyBoxVisible, setReplyBoxVisible] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [replyTo, setReplyTo] = useState(null);
 
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
-    fetch(`http://localhost:3000/api/forum/thread/${forumId}`)
-      .then(res => res.json())
-      .then(data => setThread(data))
-      .catch(err => console.error('Erreur de chargement du thread:', err));
+    fetch(`http://localhost:3000/api/forum/thread/${forumId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error("Accès refusé");
+        return res.json();
+      })
+      .then(setThread)
+      .catch(err => {
+        alert("Accès interdit ou erreur de chargement.");
+        navigate("/homepage");
+      });
   }, [forumId]);
 
   const sendReply = async () => {
     const auteur = localStorage.getItem('username');
     const contenu = replyTo
-  ? `> [${replyTo.auteur} - ${new Date(replyTo.timestamp).toLocaleString()}] ${replyTo.contenu}\n\n${replyContent}`
-  : replyContent;
+      ? `> [${replyTo.auteur} - ${new Date(replyTo.timestamp).toLocaleString()}] ${replyTo.contenu}\n\n${replyContent}`
+      : replyContent;
 
-    const res = await fetch(`http://localhost:3000/api/forum/thread/${forumId}/message`, {
+    await fetch(`http://localhost:3000/api/forum/thread/${forumId}/message`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ auteur, contenu })
     });
 
-    if (res.ok) {
-      const updated = await fetch(`http://localhost:3000/api/forum/thread/${forumId}`);
-      const data = await updated.json();
-      setThread(data);
-      setReplyBoxVisible(false);
-      setReplyContent('');
-      setReplyTo(null);
-    }
+    const updated = await fetch(`http://localhost:3000/api/forum/thread/${forumId}`);
+    const data = await updated.json();
+    setThread(data);
+    setReplyBoxVisible(false);
+    setReplyContent('');
+    setReplyTo(null);
   };
+
   const deleteMessage = async (messageId) => {
-    if (!window.confirm("Confirmer la suppression ?")) return;
-  
+    if (!window.confirm("Supprimer ce message ?")) return;
+
     await fetch(`http://localhost:3000/api/forum/thread/${forumId}/message/${messageId}`, {
       method: 'DELETE',
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { Authorization: `Bearer ${token}` }
     });
-  
+
     const res = await fetch(`http://localhost:3000/api/forum/thread/${forumId}`);
     const data = await res.json();
     setThread(data);
@@ -60,46 +71,21 @@ function Forum() {
       <header className="header-container">
         <BackgroundSlideshow />
         <div className="header-content">
-          <div className="logo1">
-            <img src={backgroundImage} alt="Red Dead Redemption 2" />
+          <div className="logo1" onClick={() => navigate('/homepage')} style={{ cursor: 'pointer' }}>
+            <img src={backgroundImage} alt="RDR2" />
           </div>
-          <div className="search1">
-            <form>
-              <input id="search" type="text" placeholder="Recherche..." />
-            </form>
-          </div>
+          <div className="search1"><form><input type="text" placeholder="Recherche..." /></form></div>
           <div className="login_register">
-            <img
-              src={profileIcon}
-              alt="Profil"
-              className="icon-button"
-              onClick={() => window.location.href = '/profile'}
-            />
-            <img
-              src={parameterIcon}
-              alt="Paramètres"
-              className="icon-button"
-              onClick={() => window.location.href = '/parameter'}
-            />
+            <img src={profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
+            <img src={parameterIcon} alt="Paramètres" className="icon-button" onClick={() => navigate('/parameter')} />
             {localStorage.getItem("role") === "admin" && (
-              <img
-                src={adminIcon}
-                alt="Admin"
-                className="icon-button"
-                onClick={() => window.location.href = '/admin'}
-                title="Admin Panel"
-              />
+              <img src={adminIcon} alt="Admin" className="icon-button" onClick={() => navigate('/admin')} />
             )}
-            <img
-              src={logoutIcon}
-              alt="Déconnexion"
-              className="icon-button"
-              onClick={() => window.location.href = '/'}
-            />
+            <img src={logoutIcon} alt="Logout" className="icon-button" onClick={() => navigate('/')} />
           </div>
         </div>
       </header>
-  
+
       <main className="main-content">
         {thread ? (
           <>
@@ -109,38 +95,20 @@ function Forum() {
               {thread.messages.map((msg, i) => (
                 <div key={i} className={`message-box ${msg.contenu.trim().startsWith('>') ? 'reply' : ''}`}>
                   <div className="message-header">
-                    <strong
-                      className="author"
-                      style={{ cursor: 'pointer', color: '#c2955b' }}
-                      onClick={() => window.location.href = `/user/${msg.auteur}`}
-                    >
-                      {msg.auteur}
-                    </strong>
+                    <strong onClick={() => navigate(`/user/${msg.auteur}`)}>{msg.auteur}</strong>
                     <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
                   </div>
                   <div className="message-content">{msg.contenu}</div>
                   <div className="message-actions">
-                    <button onClick={() => {
-                      setReplyBoxVisible(true);
-                      setReplyTo(msg);
-                    }}>💬 Répondre</button>
-
-                    {localStorage.getItem('role') === 'admin' && (
-                      <button className="delete-button" onClick={() => deleteMessage(msg._id)}>
-                        🗑 Supprimer
-                      </button>
+                    <button onClick={() => { setReplyBoxVisible(true); setReplyTo(msg); }}>💬 Répondre</button>
+                    {localStorage.getItem("role") === "admin" && (
+                      <button className="delete-button" onClick={() => deleteMessage(msg._id)}>🗑 Supprimer</button>
                     )}
                   </div>
                 </div>
-                
               ))}
             </div>
-  
-            <button onClick={() => {
-              setReplyBoxVisible(true);
-              setReplyTo(null);
-            }}>📝 Répondre au thread</button>
-  
+            <button onClick={() => { setReplyBoxVisible(true); setReplyTo(null); }}>📝 Répondre au thread</button>
             {replyBoxVisible && (
               <div className="reply-box">
                 {replyTo && (
@@ -159,9 +127,7 @@ function Forum() {
               </div>
             )}
           </>
-        ) : (
-          <p>Chargement...</p>
-        )}
+        ) : <p>Chargement...</p>}
       </main>
     </div>
   );

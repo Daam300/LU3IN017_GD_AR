@@ -18,6 +18,7 @@ function Homepage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [forums, setForums] = useState([]);
 
+// ✅ Homepage.jsx
   useEffect(() => {
     const role = localStorage.getItem("role");
     setIsAdmin(role === "admin");
@@ -27,7 +28,10 @@ function Homepage() {
 
     fetch("http://localhost:3000/api/forum/threads")
       .then(res => res.json())
-      .then(data => setForums(data))
+      .then(data => {
+        const publicOnly = data.filter(thread => !thread.prive); // ✅ filtrer ici seulement public
+        setForums(publicOnly);
+      })
       .catch(err => console.error("Erreur chargement forums:", err));
   }, []);
 
@@ -107,18 +111,20 @@ function Homepage() {
                   Créer un nouveau sujet
                 </button>
                 <div className="forum-list">
-                  {forums.map((forum) => (
-                    <div
-                      key={forum._id}
-                      className="forum-post"
-                      onClick={() => goToForum(forum._id)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <h3>{forum.titre}</h3>
-                      <p><strong>Auteur :</strong> {forum.auteur}</p>
-                      <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
-                    </div>
-                  ))}
+                  {forums
+                    .filter(forum => !forum.prive) // ✅ n'affiche que les forums publics
+                    .map((forum) => (
+                      <div
+                        key={forum._id}
+                        className="forum-post"
+                        onClick={() => goToForum(forum._id)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <h3>{forum.titre}</h3>
+                        <p><strong>Auteur :</strong> {forum.auteur}</p>
+                        <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    ))}
                 </div>
               </section>
             </>

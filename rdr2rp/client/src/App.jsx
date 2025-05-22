@@ -26,6 +26,7 @@ function App() {
         <Route path="/admin" element={<Admin />} /> {/* Ajout de la route pour l'administration */}
         <Route path="/forum/:forumId" element={<Forum />} /> {/* Route pour le forum avec un paramètre d'ID */}
         <Route path="/create-thread" element={<CreateThread />} />
+        <Route path="/create-thread-admin" element={<CreateThread />} />
         <Route path="/user/:username" element={<UserProfile />} />
       </Routes>
     </Router>

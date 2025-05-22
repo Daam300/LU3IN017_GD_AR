@@ -46,10 +46,27 @@ router.get('/threads/search', async (req, res) => {
 });
 
 router.get("/thread/:id", async (req, res) => {
-    const thread = await forumCollection.findOne({ _id: new ObjectId(req.params.id) });
-    if (!thread) return res.status(404).json({ message: "Thread non trouvé" });
-    res.json(thread);
-  });
+  const thread = await forumCollection.findOne({ _id: new ObjectId(req.params.id) });
+  if (!thread) return res.status(404).json({ message: "Thread non trouvé" });
+
+  const token = req.headers.authorization?.split(" ")[1];
+  const isPrivate = thread.prive;
+
+  if (isPrivate) {
+    if (!token) return res.status(403).json({ message: "Accès refusé" });
+    try {
+      const user = jwt.verify(token, JWT_SECRET);
+      const dbUser = await client.db(dbName).collection("users").findOne({ _id: new ObjectId(user.id) });
+      if (dbUser.role !== 'admin') {
+        return res.status(403).json({ message: "Accès réservé aux administrateurs" });
+      }
+    } catch (e) {
+      return res.status(403).json({ message: "Token invalide" });
+    }
+  }
+
+  res.json(thread);
+});
 
 // Middleware auth
 function auth(req, res, next) {
@@ -118,23 +135,30 @@ router.delete("/thread/:threadId/message/:messageId", auth, async (req, res) => 
   }
 });
   
+router.get("/threads/admin", async (req, res) => {
+  const threads = await forumCollection.find({ prive: true }).sort({ createdAt: -1 }).toArray();
+  res.json(threads);
+});
 
 // Créer un nouveau thread
+// Créer un nouveau thread
 router.post("/thread", async (req, res) => {
-  const { titre, auteur, message } = req.body;
+  const { titre, auteur, message, description, prive = false } = req.body; // 👈 inclure `description`
 
   const thread = {
     titre,
     auteur,
+    description,
     createdAt: new Date(),
+    prive, // ✅ bien inclure ce champ
     messages: [
-        {
-          _id: new ObjectId(),
-          auteur,
-          contenu: message,
-          timestamp: new Date()
-        }
-      ]
+      {
+        _id: new ObjectId(),
+        auteur,
+        contenu: message,
+        timestamp: new Date()
+      }
+    ]
   };
 
   const result = await forumCollection.insertOne(thread);
@@ -143,9 +167,51 @@ router.post("/thread", async (req, res) => {
 
 // Récupérer tous les threads
 router.get("/threads", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  let isAdmin = false;
+
+  if (token) {
+    try {
+      const user = jwt.verify(token, JWT_SECRET);
+      const dbUser = await client.db(dbName).collection("users").findOne({ _id: new ObjectId(user.id) });
+      isAdmin = dbUser?.role === "admin";
+    } catch {
+      // ignore
+    }
+  }
+
   const threads = await forumCollection.find().sort({ createdAt: -1 }).toArray();
-  res.json(threads);
+  const filtered = isAdmin ? threads : threads.filter(t => !t.prive);
+
+  res.json(filtered);
 });
+router.delete("/thread/:id", auth, async (req, res) => {
+  const threadId = req.params.id;
+
+  if (!ObjectId.isValid(threadId)) {
+    return res.status(400).json({ message: "ID invalide" });
+  }
+
+  try {
+    const user = await client.db(dbName).collection("users").findOne({ _id: new ObjectId(req.user.id) });
+
+    if (user.role !== "admin") {
+      return res.status(403).json({ message: "Seuls les admins peuvent supprimer un thread." });
+    }
+
+    const result = await forumCollection.deleteOne({ _id: new ObjectId(threadId), prive: { $ne: true } });
+
+    if (result.deletedCount === 1) {
+      res.status(200).json({ message: "Thread supprimé" });
+    } else {
+      res.status(404).json({ message: "Thread non trouvé ou privé" });
+    }
+  } catch (err) {
+    console.error("Erreur suppression thread:", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 
 // Supprimer un message d'un thread (admin seulement)
 router.delete("/thread/:threadId/message/:messageId", auth, async (req, res) => {
