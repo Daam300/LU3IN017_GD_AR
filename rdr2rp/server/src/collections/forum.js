@@ -18,13 +18,31 @@ async function connectDB() {
 }
 connectDB();
 router.get('/threads/search', async (req, res) => {
-  const q = req.query.q;
-  const threads = await forumCollection.find({
-    titre: { $regex: q, $options: 'i' }
-  }, {
-    projection: { titre: 1, auteur: 1 }
-  }).toArray();
-  res.json(threads);
+  const { q, auteur, startDate, endDate } = req.query;
+
+  const filter = {};
+
+  if (q) {
+    filter['messages.contenu'] = { $regex: q, $options: 'i' };
+  }
+
+  if (auteur) {
+    filter['messages.auteur'] = auteur;
+  }
+
+  if (startDate || endDate) {
+    filter['messages.timestamp'] = {};
+    if (startDate) filter['messages.timestamp'].$gte = new Date(startDate);
+    if (endDate) filter['messages.timestamp'].$lte = new Date(endDate);
+  }
+
+  try {
+    const results = await forumCollection.find(filter).toArray();
+    res.json(results);
+  } catch (err) {
+    console.error("Erreur recherche avancée", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
 router.get("/thread/:id", async (req, res) => {
