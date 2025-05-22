@@ -128,3 +128,49 @@ h2 {
   background: #ff0000 !important; /* Rouge vif au survol */
   color: white;
 }
+
+.register-form textarea {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2e2e2e;
+  color: #e0c097;
+  font-family: 'CustomFont', cursive;
+  font-size: 0.5rem !important;
+  resize: none;
+}
+
+.register-form textarea:focus {
+  outline: 2px solid #e0c097;
+}
+
+.register-form img.profile-preview {
+  margin-top: 10px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #e0c097;
+  object-fit: cover;
+}
+
+.register-form .profile-preview {
+  display: block;
+  margin: 0 auto 15px auto;
+}
+.custom-upload-button {
+  background-color: #800001;
+  color: #e0c097;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: inline-block;
+  margin-bottom: 10px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.custom-upload-button:hover {
+  background-color: #e0c097;
+  color: #800001;
+}

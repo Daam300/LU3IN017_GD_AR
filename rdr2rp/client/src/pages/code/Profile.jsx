@@ -10,6 +10,7 @@ import SketchfabModel from './SketchfabModel'; // 👈 import du modèle Sketchf
 
 function Profile() {
   const navigate = useNavigate();
+  const [editBio, setEditBio] = useState(false);
   const [profilePic, setProfilePic] = useState(profileIcon);
   const [userData, setUserData] = useState({
     prenom: '',
@@ -130,9 +131,10 @@ function Profile() {
         },
         body: JSON.stringify({ bio: userData.bio })
       });
-
+  
       if (!res.ok) throw new Error("Erreur lors de la mise à jour");
       alert("Bio mise à jour !");
+      setEditBio(false); // <-- Ajoute cette ligne pour sortir du mode édition
     } catch (err) {
       console.error(err);
       alert("Erreur lors de la mise à jour");
@@ -208,12 +210,22 @@ function Profile() {
           <div className="profile-info">
             <p><strong>Pseudo :</strong> {userData.username}</p>
             <label><strong>Bio :</strong></label>
-            <textarea
-              value={userData.bio}
-              onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
-              rows={4}
-            />
-            <button onClick={handleSaveBio}>Enregistrer la bio</button>
+            {!editBio ? (
+              <>
+                <p className="bio-text">{userData.bio}</p>
+                <button onClick={() => setEditBio(true)}>✏️ Modifier</button>
+              </>
+            ) : (
+              <>
+                <textarea
+                  value={userData.bio}
+                  onChange={(e) => setUserData({ ...userData, bio: e.target.value })}
+                  rows={4}
+                />
+                <button onClick={handleSaveBio}>✅ Enregistrer</button>
+                <button onClick={() => setEditBio(false)}>❌ Annuler</button>
+              </>
+            )}
           </div>
           <div className="messages-toggle">
             <button onClick={toggleMessages}>Messages envoyés</button>

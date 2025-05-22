@@ -13,6 +13,8 @@ function Register() {
   const [confirmMail, setConfirmMail] = useState('');
   const [mdp, setMdp] = useState('');
   const [confirmMdp, setConfirmMdp] = useState('');
+  const [bio, setBio] = useState('');
+  const [profilePicFile, setProfilePicFile] = useState(null);
 
   const handleCancel = (e) => {
     e.preventDefault();
@@ -36,11 +38,25 @@ function Register() {
       alert('Les mots de passe ne correspondent pas');
       return;
     }
+    if (!bio.trim()) {
+      alert("La bio est requise");
+      return;
+    }
     try {
+      const formData = new FormData();
+      formData.append('prenom', prenom);
+      formData.append('nom', nom);
+      formData.append('pseudo', pseudo);
+      formData.append('mail', mail);
+      formData.append('mdp', mdp);
+      formData.append('bio', bio);
+      if (profilePicFile) {
+        formData.append('profilePic', profilePicFile);
+      }
+    
       const response = await fetch('http://localhost:3000/api/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prenom, nom, pseudo, mail, mdp })
+        body: formData
       });
     
       let data;
@@ -65,6 +81,22 @@ function Register() {
       <BackgroundSlideshow />
       <h1>Page d'Inscription</h1>
       <form className="register-form" onSubmit={handleSubmit}>
+      <label htmlFor="profilePic" className="custom-upload-button">Choisir une photo de profil</label>
+      <input
+        id="profilePic"
+        name="profilePic"
+        type="file"
+        accept="image/*"
+        onChange={e => setProfilePicFile(e.target.files[0])}
+        style={{ display: 'none' }}
+      />
+        {profilePicFile && (
+          <img
+            src={URL.createObjectURL(profilePicFile)}
+            alt="Preview"
+            className="profile-preview"
+          />
+        )}
         <label htmlFor="prenom">Prénom</label>
         <input
           id="prenom"
@@ -127,6 +159,16 @@ function Register() {
           value={confirmMdp}
           onChange={e => setConfirmMdp(e.target.value)}
         />
+        <label htmlFor="bio">Biographie</label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={bio}
+          onChange={e => setBio(e.target.value)}
+          rows="4"
+        />
+
+
 
         <div className="buttons">
           <button type="submit">Inscription</button>

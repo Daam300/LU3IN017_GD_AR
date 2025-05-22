@@ -109,7 +109,13 @@ function Forum() {
               {thread.messages.map((msg, i) => (
                 <div key={i} className={`message-box ${msg.contenu.trim().startsWith('>') ? 'reply' : ''}`}>
                   <div className="message-header">
-                    <strong className="author">{msg.auteur}</strong>
+                    <strong
+                      className="author"
+                      style={{ cursor: 'pointer', color: '#c2955b' }}
+                      onClick={() => window.location.href = `/user/${msg.auteur}`}
+                    >
+                      {msg.auteur}
+                    </strong>
                     <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
                   </div>
                   <div className="message-content">{msg.contenu}</div>

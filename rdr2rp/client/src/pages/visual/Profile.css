@@ -439,3 +439,12 @@
   order: 2; /* Place la biographie à droite */
   margin-left: 110px; /* Pousse la biographie vers la droite */
 }
+
+.bio-text {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #2e2e2e;
+  color: #e0c097;
+  border: 1px solid #e0c097;
+  border-radius: 5px;
+}

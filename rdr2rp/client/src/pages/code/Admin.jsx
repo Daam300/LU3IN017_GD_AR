@@ -83,6 +83,7 @@ function Admin() {
           {pendingUsers.map(user => (
             <div key={user._id} className="user-card">
               <strong>{user.username}</strong> ({user.email})<br />
+              <em>{user.bio}</em><br />
               <button onClick={() => updateStatus(user._id, 'approve')} className="approve-button">✅ Accepter</button>
               <button onClick={() => updateStatus(user._id, 'refuse')} className="refuse-button">❌ Refuser</button>
             </div>

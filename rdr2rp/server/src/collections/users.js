@@ -27,32 +27,64 @@ function auth(req, res, next) {
     res.status(401).send("Token invalide");
   }
 }
+router.get('/user/:username', async (req, res) => {
+  const user = await usersCollection.findOne(
+    { username: req.params.username },
+    { projection: { prenom: 0, nom: 0, email: 0, status: 0, password: 0 } }
+  );
+
+  if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+
+  res.json(user);
+});
+
+router.get('/users/search', async (req, res) => {
+  const q = req.query.q;
+  const users = await usersCollection.find({
+    username: { $regex: q, $options: 'i' }
+  }, {
+    projection: { username: 1, profilePic: 1 }
+  }).toArray();
+  res.json(users);
+});
 
 // REGISTER
-router.post('/register', async (req, res) => {
-    const { mail, pseudo, mdp, prenom, nom } = req.body;
-  
+const multer = require('multer');
+const upload = multer();
+
+router.post('/register', upload.single('profilePic'), async (req, res) => {
+  const { prenom, nom, pseudo, mail, mdp, bio } = req.body;
+  let profilePic = '';
+
+  if (req.file) {
+    profilePic = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+  }
+
+  try {
+    const existing = await usersCollection.findOne({ $or: [{ email: mail }, { username: pseudo }] });
+    if (existing) return res.status(400).json({ message: "Email ou pseudo déjà utilisé" });
+
     const hash = await bcrypt.hash(mdp, 10);
-  
-    try {
-      const existing = await usersCollection.findOne({ $or: [{ email: mail }, { username: pseudo }] });
-      if (existing) return res.status(400).json({ message: "Email ou pseudo déjà utilisé" });
-  
-      const result = await usersCollection.insertOne({
-        email: mail,
-        username: pseudo,
-        passwordHash: hash,
-        prenom,
-        nom,
-        status: "pending",
-        createdAt: new Date()
-      });
-  
-      res.status(201).json({ userId: result.insertedId });
-    } catch (e) {
-      res.status(500).json({ message: "Erreur serveur" });
-    }
-  });
+
+    const result = await usersCollection.insertOne({
+      email: mail,
+      username: pseudo,
+      passwordHash: hash,
+      prenom,
+      nom,
+      bio,
+      profilePic,
+      status: "pending",
+      role: "user",
+      createdAt: new Date()
+    });
+
+    res.status(201).json({ userId: result.insertedId });
+  } catch (e) {
+    console.error("[REGISTER] ❌", e);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
 
 // LOGIN
 router.post('/login', async (req, res) => {
