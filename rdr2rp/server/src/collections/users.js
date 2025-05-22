@@ -3,11 +3,42 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { MongoClient, ObjectId } = require("mongodb");
-
 const router = express.Router();
 const JWT_SECRET = "votre_secret_jwt"; // À stocker de manière sécurisée
 const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'adamrguig82@gmail.com', // ⚠️ à remplacer
+    pass: 'uvgr xqmv tbpp zuez'        // ⚠️ mot de passe d'application Gmail
+  }
+});
+
+async function sendApprovalEmail(email, username) {
+  const mailOptions = {
+    from: 'RDR2RP <tonemail@gmail.com>',
+    to: email,
+    subject: '✅ Inscription approuvée',
+    text: `Bonjour ${username},
+
+Votre inscription à RDR2RP a été validée avec succès !
+
+Vous pouvez maintenant vous connecter à la plateforme.
+
+À très vite,
+L’équipe RDR2RP`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`[MAIL] Email envoyé à ${email}`);
+  } catch (err) {
+    console.error("[MAIL] ❌ Erreur d'envoi :", err);
+  }
+}
 
 let usersCollection;
 console.log("[API] /api/users/register prêt !");
@@ -229,13 +260,19 @@ router.get('/users/approved', async (req, res) => {
 router.post('/users/validate/:id', async (req, res) => {
   const { id } = req.params;
   const { action } = req.body;
-
   const status = action === 'approve' ? 'approved' : 'refused';
 
   await usersCollection.updateOne(
     { _id: new ObjectId(id) },
     { $set: { status } }
   );
+
+  if (action === 'approve') {
+    const user = await usersCollection.findOne({ _id: new ObjectId(id) });
+    if (user?.email && user?.username) {
+      await sendApprovalEmail(user.email, user.username);
+    }
+  }
 
   res.sendStatus(200);
 });
