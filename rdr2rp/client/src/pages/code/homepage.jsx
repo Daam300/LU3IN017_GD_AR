@@ -71,7 +71,6 @@ function Homepage() {
           <div className="logo1" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
             <img src={rdr2Logo} alt="RDR2 Logo" />
           </div>
-
           <div className="search1">
             <form onSubmit={handleSearchSubmit}>
               <input
@@ -82,96 +81,95 @@ function Homepage() {
               />
             </form>
           </div>
-
           <div className="login_register">
             <img src={profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
             <img src={parameterIcon} alt="Paramètres" className="icon-button" onClick={() => navigate('/parameter')} />
-            {isAdmin && (
-              <img src={adminIcon} alt="Admin" className="icon-button" onClick={() => navigate('/admin')} />
-            )}
+            {isAdmin && <img src={adminIcon} alt="Admin" className="icon-button" onClick={() => navigate('/admin')} />}
             <img src={logoutIcon} alt="Logout" className="icon-button" onClick={handleLogout} />
           </div>
         </div>
       </header>
-
-      <aside className="sidebar">
-        <h2>Navigation</h2>
-        <p>Bienvenue dans l'application !</p>
-        <Link to="/dashboard">Dashboard</Link>
-      </aside>
-
-      <main className="main-content">
-        {!searchTriggered ? (
-          <>
-            <h1>Bienvenue sur RDR2RP !</h1>
+  
+      <div className="content-layout">
+        <aside className="sidebar">
+          <h2>Navigation</h2>
+          <p>Bienvenue dans l'application !</p>
+          <Link to="/dashboard">Dashboard</Link>
+        </aside>
+  
+        <main className="main-content">
+          {!searchTriggered ? (
+            <>
+              <h1>Bienvenue sur RDR2RP !</h1>
+              <section className="forum-section">
+                <h2>Forums récents</h2>
+                <button onClick={() => navigate('/create-thread')} className="create-thread-btn">
+                  Créer un nouveau sujet
+                </button>
+                <div className="forum-list">
+                  {forums.map((forum) => (
+                    <div
+                      key={forum._id}
+                      className="forum-post"
+                      onClick={() => goToForum(forum._id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <h3>{forum.titre}</h3>
+                      <p><strong>Auteur :</strong> {forum.auteur}</p>
+                      <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </>
+          ) : (
             <section className="forum-section">
-              <h2>Forums récents</h2>
-              <button onClick={() => navigate('/create-thread')} className="create-thread-btn">
-                Créer un nouveau sujet
-              </button>
-              <div className="forum-list">
-                {forums.map((forum) => (
-                  <div
-                    key={forum._id}
-                    className="forum-post"
-                    onClick={() => goToForum(forum._id)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <h3>{forum.titre}</h3>
-                    <p><strong>Auteur :</strong> {forum.auteur}</p>
-                    <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
-                  </div>
-                ))}
-              </div>
+              <h2>Résultats de recherche</h2>
+              {submittedQuery.trim() === '' || (searchResults.users.length === 0 && searchResults.threads.length === 0) ? (
+                <p>Aucun résultat trouvé pour « {submittedQuery} ».</p>
+              ) : (
+                <>
+                  {searchResults.users.length > 0 && (
+                    <>
+                      <h3>Utilisateurs</h3>
+                      <div className="forum-list">
+                        {searchResults.users.map((u) => (
+                          <div
+                            key={u._id}
+                            className="forum-post user-result"
+                            onClick={() => navigate(`/user/${u.username}`)}
+                          >
+                            <img src={u.profilePic} alt={u.username} className="profile-pic-circle" />
+                            <p>{u.username}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {searchResults.threads.length > 0 && (
+                    <>
+                      <h3>Threads</h3>
+                      <div className="forum-list">
+                        {searchResults.threads.map((t) => (
+                          <div
+                            key={t._id}
+                            className="forum-post"
+                            onClick={() => goToForum(t._id)}
+                          >
+                            <h3>{t.titre}</h3>
+                            <p><strong>Auteur :</strong> {t.auteur}</p>
+                            <p><strong>Date :</strong> {new Date(t.createdAt).toLocaleDateString()}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
             </section>
-          </>
-        ) : (
-          <section className="forum-section">
-            <h2>Résultats de recherche</h2>
-            {submittedQuery.trim() === '' || (searchResults.users.length === 0 && searchResults.threads.length === 0) ? (
-              <p>Aucun résultat trouvé pour « {submittedQuery} ».</p>
-            ) : (
-              <>
-                {searchResults.users.length > 0 && (
-                  <>
-                    <h3>Utilisateurs</h3>
-                    <div className="forum-list">
-                      {searchResults.users.map((u) => (
-                        <div
-                          key={u._id}
-                          className="forum-post user-result"
-                          onClick={() => navigate(`/user/${u.username}`)}
-                        >
-                          <img src={u.profilePic} alt={u.username} className="profile-pic-circle" />
-                          <p>{u.username}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-                {searchResults.threads.length > 0 && (
-                  <>
-                    <h3>Threads</h3>
-                    <div className="forum-list">
-                      {searchResults.threads.map((t) => (
-                        <div
-                          key={t._id}
-                          className="forum-post"
-                          onClick={() => goToForum(t._id)}
-                        >
-                          <h3>{t.titre}</h3>
-                          <p><strong>Auteur :</strong> {t.auteur}</p>
-                          <p><strong>Date :</strong> {new Date(t.createdAt).toLocaleDateString()}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-          </section>
-        )}
-      </main>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
