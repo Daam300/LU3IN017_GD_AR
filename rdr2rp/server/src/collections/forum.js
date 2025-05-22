@@ -44,6 +44,47 @@ router.get('/threads/search', async (req, res) => {
   }
 });
 
+router.patch("/thread/:threadId/message/:messageId/like", auth, async (req, res) => {
+  await connectDB(); // ✅ FIX ajouté ici
+
+  const { threadId, messageId } = req.params;
+  const userId = req.user.id;
+
+  if (!ObjectId.isValid(threadId) || !ObjectId.isValid(messageId)) {
+    return res.status(400).json({ message: "ID invalide" });
+  }
+
+  try {
+    const thread = await forumCollection.findOne({ _id: new ObjectId(threadId) });
+    if (!thread) return res.status(404).json({ message: "Thread introuvable" });
+
+    const messages = thread.messages.map(msg => {
+      if (msg._id.toString() !== messageId) return msg;
+
+      if (!msg.likes) msg.likes = [];
+
+      const index = msg.likes.indexOf(userId);
+      if (index === -1) {
+        msg.likes.push(userId);
+      } else {
+        msg.likes.splice(index, 1);
+      }
+
+      return msg;
+    });
+
+    await forumCollection.updateOne(
+      { _id: new ObjectId(threadId) },
+      { $set: { messages } }
+    );
+
+    res.status(200).json({ message: "Like mis à jour" });
+  } catch (err) {
+    console.error("Erreur like message:", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 router.get('/messages/user/:username', async (req, res) => {
   const { username } = req.params;
 

@@ -75,6 +75,18 @@ function Forum() {
     const data = await res.json();
     setThread(data);
   };
+  const toggleLike = async (messageId) => {
+    await fetch(`http://localhost:3000/api/forum/thread/${forumId}/message/${messageId}/like`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  
+    const res = await fetch(`http://localhost:3000/api/forum/thread/${forumId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const updated = await res.json();
+    setThread(updated);
+  };
 
   return (
     <div className="page-container">
@@ -111,6 +123,9 @@ function Forum() {
                 <div className="message-content">{msg.contenu}</div>
                 <div className="message-actions">
                   <button onClick={() => { setReplyBoxVisible(true); setReplyTo(msg); }}>💬 Répondre</button>
+                  <button onClick={() => toggleLike(msg._id)}>
+                    {msg.likes?.includes(localStorage.getItem("userId")) ? '❤️' : '🤍'} {msg.likes?.length || 0}
+                  </button>
                   {localStorage.getItem("role") === "admin" && (
                     <button className="delete-button" onClick={() => deleteMessage(msg._id)}>🗑 Supprimer</button>
                   )}
