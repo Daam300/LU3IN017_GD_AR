@@ -18,6 +18,19 @@ function Homepage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [forums, setForums] = useState([]);
 
+  const [favoris, setFavoris] = useState(() => {
+    const saved = localStorage.getItem('favoris');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const toggleFavori = (threadId) => {
+    const updated = favoris.includes(threadId)
+      ? favoris.filter(id => id !== threadId)
+      : [...favoris, threadId];
+  
+    setFavoris(updated);
+    localStorage.setItem('favoris', JSON.stringify(updated));
+  };
+
 // ✅ Homepage.jsx
   useEffect(() => {
     const role = localStorage.getItem("role");
@@ -99,6 +112,20 @@ function Homepage() {
           <h2>Navigation</h2>
           <p>Bienvenue dans l'application !</p>
           <Link to="/dashboard">Dashboard</Link>
+          {favoris.length > 0 && (
+            <>
+              <h3>⭐ Favoris</h3>
+              <ul>
+                {forums
+                  .filter(f => favoris.includes(f._id))
+                  .map(f => (
+                    <li key={f._id} style={{ cursor: 'pointer' }} onClick={() => navigate(`/forum/${f._id}`)}>
+                      {f.titre}
+                    </li>
+                  ))}
+              </ul>
+            </>
+          )}
         </aside>
   
         <main className="main-content">
@@ -123,6 +150,13 @@ function Homepage() {
                         <h3>{forum.titre}</h3>
                         <p><strong>Auteur :</strong> {forum.auteur}</p>
                         <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
+
+                        <button onClick={(e) => {
+                          e.stopPropagation(); // pour éviter d'ouvrir le forum
+                          toggleFavori(forum._id);
+                        }}>
+                          {favoris.includes(forum._id) ? '⭐' : '☆'}
+                        </button>
                       </div>
                     ))}
                 </div>
