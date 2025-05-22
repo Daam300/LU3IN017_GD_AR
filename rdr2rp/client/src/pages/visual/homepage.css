@@ -224,6 +224,8 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
+    overflow: hidden;
   }
   
   /* Barre latérale */
@@ -276,9 +278,10 @@
   
   .forum-section {
     width: 100%;
-    max-width: 1000px;     /* limite la largeur */
+    max-width: 1000px;
     padding: 20px;
     box-sizing: border-box;
+    margin: 0 auto;
   }
 
   /* Mode clair pour le main content */
@@ -386,23 +389,31 @@
 .content-layout {
   display: flex;
   flex-direction: row;
-  height: 100%;
   flex: 1;
+  width: 100%;
+  height: calc(100vh - 150px); /* si le header fait ~150px */
+  overflow: hidden;
 }
 
 .sidebar {
   width: 250px;
   background-color: #1e1e1e;
-  padding: 20px;
   color: #e0c097;
-  height: 100%;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
 }
+
 
 .main-content {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 40px;
   background-color: #121212;
+  color: #e0c097;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .align-with-main {
@@ -415,6 +426,12 @@
 
 @media (max-width: 1440px) {
   .forum-section {
-    max-width: 95vw;
+    max-width: 90vw;
+  }
+}
+
+@media (min-width: 2560px) {
+  .forum-section {
+    max-width: 65vw;
   }
 }
