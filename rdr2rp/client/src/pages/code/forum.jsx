@@ -7,6 +7,8 @@ import profileIcon from '../../assets/profile.png';
 import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
 import adminIcon from '../../assets/admin.png';
+import favIcon from '../../assets/fav.png';
+import noFavIcon from '../../assets/no_fav.png';
 
 function Forum() {
   const { forumId } = useParams();
@@ -15,6 +17,7 @@ function Forum() {
   const [replyBoxVisible, setReplyBoxVisible] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [replyTo, setReplyTo] = useState(null);
+  const [userPics, setUserPics] = useState({});
 
   const token = localStorage.getItem('token');
 
@@ -42,6 +45,28 @@ function Forum() {
       }, 300);
     }
   }, [thread]); 
+
+  useEffect(() => {
+    if (thread && thread.messages) {
+      const auteurs = Array.from(new Set(thread.messages.map(m => m.auteur)));
+      Promise.all(
+        auteurs.map(async auteur => {
+          const res = await fetch(`http://localhost:3000/api/users/${auteur}`);
+          if (res.ok) {
+            const data = await res.json();
+            return { auteur, profilePic: data.profilePic };
+          }
+          return { auteur, profilePic: null };
+        })
+      ).then(results => {
+        const pics = {};
+        results.forEach(({ auteur, profilePic }) => {
+          pics[auteur] = profilePic;
+        });
+        setUserPics(pics);
+      });
+    }
+  }, [thread]);
 
   const sendReply = async () => {
     const auteur = localStorage.getItem('username');
@@ -116,8 +141,16 @@ function Forum() {
             <div className="messages">
             {thread.messages.map((msg) => (
               <div key={msg._id} id={msg._id} className={`message-box ${msg.contenu.trim().startsWith('>') ? 'reply' : ''}`}>
-                <div className="message-header">
-                  <strong onClick={() => navigate(`/user/${msg.auteur}`)}>{msg.auteur}</strong>
+                <div className="message-header" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <img
+                    src={userPics[msg.auteur] || profileIcon}
+                    alt={msg.auteur}
+                    className="profile-pic-circle"
+                    style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', marginRight: 8 }}
+                  />
+                  <strong onClick={() => navigate(`/user/${msg.auteur}`)} style={{ marginRight: 12 }}>
+                    {msg.auteur}
+                  </strong>
                   <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
                 </div>
                 <div className="message-content">{msg.contenu}</div>

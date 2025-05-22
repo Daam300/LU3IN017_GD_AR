@@ -8,6 +8,8 @@ import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
 import adminIcon from '../../assets/admin.png';
 import rdr2Logo from '../../assets/rdr2.png';
+import favIcon from '../../assets/fav.png';
+import noFavIcon from '../../assets/no_fav.png';
 
 function Homepage() {
   const navigate = useNavigate();
@@ -152,10 +154,14 @@ function Homepage() {
                         <p><strong>Date :</strong> {new Date(forum.createdAt).toLocaleDateString()}</p>
 
                         <button onClick={(e) => {
-                          e.stopPropagation(); // pour éviter d'ouvrir le forum
+                          e.stopPropagation();
                           toggleFavori(forum._id);
                         }}>
-                          {favoris.includes(forum._id) ? '⭐' : '☆'}
+                          <img
+                            src={favoris.includes(forum._id) ? favIcon : noFavIcon}
+                            alt={favoris.includes(forum._id) ? 'Favori' : 'Non favori'}
+                            style={{ width: '32px', height: '32px' }}
+                          />
                         </button>
                       </div>
                     ))}

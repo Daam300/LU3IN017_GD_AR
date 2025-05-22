@@ -346,9 +346,9 @@
 }
 
 .character-bio-section textarea {
-  width: 100%;
-  min-width: 500px;
-  max-width: 1000px;
+  width: 99%;
+  min-width: 180px;
+  max-width: 450px;
   min-height: 200px;
   padding: 10px;
   border-radius: 6px;
@@ -358,6 +358,7 @@
   font-family: 'CustomFont', cursive;
   resize: vertical;
   margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 /* Mise en page du profil */
@@ -427,6 +428,18 @@
   box-sizing: border-box;
   order: 2;
   margin: 0;
+}
+
+/* Mode clair */
+body.light-mode, .profile-main-content.light-mode {
+  background-color: #ffffff;
+  color: #121212;
+}
+
+/* Mode sombre */
+body.dark-mode, .profile-main-content.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0c097;
 }
 
 /* Responsive breakpoints */

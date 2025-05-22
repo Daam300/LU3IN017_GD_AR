@@ -19,11 +19,14 @@ function Profile() {
     email: '',
     bio: 'Passionné par les jeux vidéo et le développement web.',
   });
-
-
   const [isMessagesVisible, setIsMessagesVisible] = useState(false);
   const [characterBio, setCharacterBio] = useState('Biographie du personnage non renseignée.');
   const [userMessages, setUserMessages] = useState([]);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
+
+  useEffect(() => {
+    document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
+  }, [theme]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -154,7 +157,7 @@ function Profile() {
   };
 
   return (
-    <div className="page-container">
+    <div className={`page-container ${theme === 'dark' ? 'dark-mode' : 'light-mode'}`}>
       {/* Header */}
       <header className="header-container">
         <BackgroundSlideshow />
@@ -162,13 +165,11 @@ function Profile() {
           <div className="logo1">
             <img src={rdr2Logo} alt="Red Dead Redemption 2" onClick={handleBackToHome} style={{cursor: 'pointer'}}/>
           </div>
-
           <div className="search1">
             <form>
               <input id="search" type="text" placeholder="Recherche..." />
             </form>
           </div>
-
           <div className="login_register">
             <img
               src={profilePic}
@@ -225,7 +226,7 @@ function Profile() {
             Retour à l'accueil
           </button>
         </aside>
-        <main className="profile-main-content">
+        <main className={`profile-main-content ${theme === 'dark' ? 'dark-mode' : 'light-mode'}`}> 
           <div className="profile-content">
             {/* Ajout du conteneur pour le modèle 3D et la biographie */}
             <div className="model-bio-container">

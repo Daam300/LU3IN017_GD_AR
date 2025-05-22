@@ -16,20 +16,33 @@ function Parameter() {
     alert('Vos paramètres ont été sauvegardés.');
   };
 
-  const handleSaveTheme = () => {
-    // Sauvegarde le choix du thème dans le Local Storage
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    alert('Le thème a été sauvegardé.');
-  };
-
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode); // Bascule entre clair et sombre
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('theme', newMode ? 'dark' : 'light');
   };
 
   // Appliquer la classe au <body> en fonction de isDarkMode
   useEffect(() => {
     document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
   }, [isDarkMode]);
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) return;
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:3000/api/me', {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Erreur lors de la suppression du compte');
+      localStorage.clear();
+      alert('Votre compte a bien été supprimé.');
+      window.location.href = '/';
+    } catch (err) {
+      alert('Erreur lors de la suppression du compte.');
+    }
+  };
 
   return (
     <div className="parameter-container">
@@ -38,9 +51,6 @@ function Parameter() {
         <div className={`theme-toggle-circle ${isDarkMode ? 'filled' : 'empty'}`}></div>
         <span>{isDarkMode ? 'Mode Sombre' : 'Mode Clair'}</span>
       </div>
-      <button className="save-button" onClick={handleSaveTheme}>
-        Sauvegarder le thème
-      </button>
       <form className="parameter-form" onSubmit={handleSave}>
         <div className="form-group">
           <label htmlFor="username">Nom d'utilisateur</label>
@@ -69,6 +79,9 @@ function Parameter() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <button className="delete-account-btn" type="button" onClick={handleDeleteAccount}>
+          Supprimer mon compte
+        </button>
         <button type="submit" className="save-button">Sauvegarder</button>
       </form>
     </div>

@@ -330,6 +330,7 @@
   border: 2px solid #e0c097;
   font-size: 1.3rem;
   box-shadow: 0 0 10px rgba(224, 192, 151, 0.1);
+  position: relative; /* Pour positionner le bouton favori absolument */
 }
 
 .forum-post h3 {
@@ -434,4 +435,44 @@
   .forum-section {
     max-width: 65vw;
   }
+}
+
+.forum-post button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #e0c097;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.forum-post button:hover {
+  color: #ffd700;
+  transform: scale(1.2);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar ul li {
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: none;
+  color: #e0c097;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  position: relative;
+}
+.sidebar ul li:hover {
+  background: linear-gradient(90deg, #c2955b 0%, #e0c097 100%);
+  color: #1e1e1e;
+  transform: translateX(8px) scale(1.05) skewX(-3deg);
+  box-shadow: 0 2px 12px 0 rgba(224,192,151,0.15);
 }
