@@ -167,17 +167,17 @@ router.get("/threads/admin", async (req, res) => {
   res.json(threads);
 });
 
-// Créer un nouveau thread
-// Créer un nouveau thread
 router.post("/thread", async (req, res) => {
-  const { titre, auteur, message, description, prive = false } = req.body; // 👈 inclure `description`
+  await connectDB(); // ✅ nécessaire pour initialiser forumCollection
+
+  const { titre, auteur, message, description, prive = false } = req.body;
 
   const thread = {
     titre,
     auteur,
     description,
     createdAt: new Date(),
-    prive, // ✅ bien inclure ce champ
+    prive,
     messages: [
       {
         _id: new ObjectId(),

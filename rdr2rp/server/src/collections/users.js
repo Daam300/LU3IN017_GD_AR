@@ -183,6 +183,37 @@ router.patch("/me/bio", auth, async (req, res) => {
 
   res.status(200).json({ message: "Bio mise à jour" });
 });
+router.patch("/me", auth, async (req, res) => {
+  const updates = {};
+  const { username, email, password } = req.body;
+
+  if (username) {
+    if (!/[A-Z]/.test(username)) {
+      return res.status(400).json({ message: "Le pseudo doit contenir une majuscule" });
+    }
+    updates.username = username;
+  }
+
+  if (email) {
+    updates.email = email;
+  }
+
+  if (password) {
+    const hash = await bcrypt.hash(password, 10);
+    updates.passwordHash = hash;
+  }
+
+  try {
+    await usersCollection.updateOne(
+      { _id: new ObjectId(req.user.id) },
+      { $set: updates }
+    );
+    res.status(200).json({ message: "Profil mis à jour" });
+  } catch (err) {
+    console.error("❌ Erreur update profil :", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
 
 // ADMIN 
 router.get('/users/pending', async (req, res) => {

@@ -13,7 +13,8 @@ function UserProfile() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [userThreads, setUserThreads] = useState([]);
-
+  const [userMessages, setUserMessages] = useState([]);
+  const [isMessagesVisible, setIsMessagesVisible] = useState(false);  
   useEffect(() => {
     fetch(`http://localhost:3000/api/user/${username}`)
       .then(res => res.json())
@@ -22,8 +23,13 @@ function UserProfile() {
   
     fetch(`http://localhost:3000/api/forum/threads/user/${username}`)
       .then(res => res.json())
-      .then(data => setUserThreads(data))
+      .then(data => setUserThreads(data.filter(thread => !thread.prive))) // exclut les threads privés
       .catch(err => console.error("Erreur récupération threads utilisateur:", err));
+  
+    fetch(`http://localhost:3000/api/forum/messages/user/${username}`)
+      .then(res => res.json())
+      .then(data => setUserMessages(data))
+      .catch(err => console.error("Erreur récupération messages utilisateur:", err));
   }, [username]);
 
   if (!userData) return <p>Chargement...</p>;
@@ -67,6 +73,9 @@ function UserProfile() {
             </li>
             ))}
           </ul>
+          <div className="messages-toggle">
+            <button onClick={() => setIsMessagesVisible(!isMessagesVisible)}>Messages envoyés</button>                                                                  
+          </div>
         </aside>
         <main className="profile-main-content">
           <div className="model-bio-container">
@@ -79,6 +88,23 @@ function UserProfile() {
             </div>
           </div>
         </main>
+        <aside className={`messages-sidebar ${isMessagesVisible ? 'visible' : ''}`}>
+            <h2>Messages envoyés</h2>
+            <ul>
+                {userMessages.map((msg, index) => (
+                <li key={index}>
+                    <p><strong>Thread:</strong> {msg.threadTitle}</p>
+                    <p>{msg.contenu}</p>
+                    <button
+                    onClick={() => navigate(`/thread/${msg.threadId}`)}
+                    style={{ marginTop: "5px", padding: "3px 8px", fontSize: "0.9rem" }}
+                    >
+                    Voir le message
+                    </button>
+                </li>
+                ))}
+            </ul>
+        </aside>
       </div>
     </div>
   );
