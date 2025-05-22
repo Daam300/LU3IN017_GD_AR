@@ -71,7 +71,7 @@ function Homepage() {
           <div className="logo1" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
             <img src={rdr2Logo} alt="RDR2 Logo" />
           </div>
-          <div className="search1">
+          <div className="search1 align-with-main">
             <form onSubmit={handleSearchSubmit}>
               <input
                 type="text"

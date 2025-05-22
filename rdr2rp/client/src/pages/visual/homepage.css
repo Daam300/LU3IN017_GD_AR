@@ -264,11 +264,21 @@
   
   /* Contenu principal */
   .main-content {
-    grid-area: main;
-    padding: 20px;
+    flex: 1;
+    padding: 40px;
     background-color: #121212;
-    color: #e0c097;
     overflow-y: auto;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* centre le contenu horizontalement */
+  }
+  
+  .forum-section {
+    width: 100%;
+    max-width: 1000px;     /* limite la largeur */
+    padding: 20px;
+    box-sizing: border-box;
   }
 
   /* Mode clair pour le main content */
@@ -293,9 +303,7 @@
     transform: scale(1.1); /* Agrandit légèrement le logo au survol */
   }
 
-  .forum-section {
-  margin-top: 30px;
-}
+
 
 .forum-section h2 {
   color: #e0c097;
@@ -395,4 +403,18 @@
   overflow-y: auto;
   padding: 20px;
   background-color: #121212;
+}
+
+.align-with-main {
+  margin-left: 270px; /* décale vers la droite (250 sidebar + 20 padding) */
+}
+
+.align-with-main form {
+  justify-content: flex-start;
+}
+
+@media (max-width: 1440px) {
+  .forum-section {
+    max-width: 95vw;
+  }
 }
