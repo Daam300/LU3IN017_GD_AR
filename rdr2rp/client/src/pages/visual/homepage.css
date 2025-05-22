@@ -282,16 +282,54 @@
     overflow-y: auto;
   }
 
-  /* Mode clair pour le main content */
-  body.light-mode .main-content {
+  /* Mode clair pour le body */
+  body.light-mode {
     background-color: #ffffff; /* Arrière-plan blanc */
     color: #121212; /* Texte sombre */
   }
 
-  /* Mode sombre pour le main content */
-  body.dark-mode .main-content {
+  /* Mode sombre pour le body */
+  body.dark-mode {
     background-color: #121212; /* Arrière-plan sombre */
     color: #e0c097; /* Texte clair */
+  }
+
+  /* Mode clair pour la sidebar */
+  body.light-mode .sidebar {
+    background-color: #d3d3d3; /* Gris clair */
+    color: #121212; /* Texte sombre */
+  }
+
+  body.light-mode .sidebar a {
+    color: #121212; /* Liens en texte sombre */
+  }
+
+  body.light-mode .sidebar a:hover {
+    background-color: #c0c0c0; /* Couleur de survol légèrement plus foncée */
+  }
+
+  body.light-mode .sidebar h2,
+  body.light-mode .sidebar p {
+    color: #121212; /* Titre et texte en sombre */
+  }
+
+  /* Mode sombre pour la sidebar */
+  body.dark-mode .sidebar {
+    background-color: #1e1e1e; /* Fond sombre */
+    color: #e0c097; /* Texte clair */
+  }
+
+  body.dark-mode .sidebar a {
+    color: #e0c097; /* Liens en texte clair */
+  }
+
+  body.dark-mode .sidebar a:hover {
+    background-color: #2e2e2e; /* Couleur de survol sombre */
+  }
+
+  body.dark-mode .sidebar h2,
+  body.dark-mode .sidebar p {
+    color: #e0c097; /* Titre et texte en clair */
   }
 
   .logo1 img {
@@ -317,57 +355,29 @@
 .forum-list {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding: 20px;
-  max-width: 75vw;
-  margin: 0 auto;
+  gap: 20px;
 }
 
 .forum-post {
   background-color: #1e1e1e;
-  padding: 40px;
-  border-radius: 10px;
-  border: 2px solid #e0c097;
-  font-size: 1.3rem;
-  box-shadow: 0 0 10px rgba(224, 192, 151, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0c097;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Ajout de la transition */
+}
+
+.forum-post:hover {
+  transform: scale(1.03); /* Légère augmentation de la taille */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Ombre plus prononcée */
 }
 
 .forum-post h3 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #e0c097;
 }
 
 .forum-post p {
-  margin: 8px 0;
+  margin: 5px 0;
   color: #ccc;
-  font-size: 1.2rem;
-}
-
-.create-thread-btn {
-  margin-bottom: 1rem;
-  padding: 0.6rem 1rem;
-  background-color: #8b0000;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.create-thread-btn:hover {
-  background-color: #a52a2a;
-}
-.profile-pic-circle {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
-}
-
-.user-result {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
