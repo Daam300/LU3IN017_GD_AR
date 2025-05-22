@@ -20,33 +20,24 @@ function Profile() {
     bio: 'Passionné par les jeux vidéo et le développement web.',
   });
 
-  const [messages, setMessages] = useState([
-    'Message 1 : Bonjour !',
-    'Message 2 : Comment ça va ?',
-    'Message 3 : Merci pour votre aide.',
-    'Message 4 : À bientôt !',
-  ]);
 
   const [isMessagesVisible, setIsMessagesVisible] = useState(false);
   const [characterBio, setCharacterBio] = useState('Biographie du personnage non renseignée.');
+  const [userMessages, setUserMessages] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     fetch('http://localhost:3000/api/me', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())
-      .then(data => {
-        setUserData({
-          prenom: data.prenom,
-          nom: data.nom,
-          username: data.username,
-          email: data.email,
-          bio: data.bio || 'Bio non renseignée'
-        });
+      .then(async data => {
+        setUserData({ ...data, bio: data.bio || 'Bio non renseignée' });
         setProfilePic(data.profilePic || profileIcon);
+
+        const msgRes = await fetch(`http://localhost:3000/api/forum/messages/user/${data.username}`);
+        const msgs = await msgRes.json();
+        setUserMessages(msgs);
       })
       .catch(err => console.error('Erreur récupération profil', err));
   }, []);
@@ -262,8 +253,19 @@ function Profile() {
       <aside className={`messages-sidebar ${isMessagesVisible ? 'visible' : ''}`}>
         <h2>Messages envoyés</h2>
         <ul>
-          {messages.map((message, index) => (
-            <li key={index}>{message}</li>
+          {userMessages.map((msg, index) => (
+            <li key={index}>
+              <p>
+                <strong>Thread:</strong> {msg.threadTitle}
+              </p>
+              <p>{msg.contenu}</p>
+              <button
+                onClick={() => navigate(`/thread/${msg.threadId}`)}
+                style={{ marginTop: "5px", padding: "3px 8px", fontSize: "0.9rem" }}
+              >
+                Voir le message
+              </button>
+            </li>
           ))}
         </ul>
       </aside>

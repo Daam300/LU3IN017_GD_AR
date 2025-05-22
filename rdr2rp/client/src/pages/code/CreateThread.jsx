@@ -34,7 +34,7 @@ function CreateThread() {
     });
 
     if (res.ok) {
-      navigate('/admin');
+      navigate(-1);
     } else {
       alert("Erreur création du sujet.");
     }

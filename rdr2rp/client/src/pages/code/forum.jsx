@@ -33,6 +33,16 @@ function Forum() {
       });
   }, [forumId]);
 
+  useEffect(() => {
+    const hash = window.location.hash.substring(1); // récupère l’ID
+    if (hash) {
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+    }
+  }, [thread]); 
+
   const sendReply = async () => {
     const auteur = localStorage.getItem('username');
     const contenu = replyTo
@@ -92,21 +102,21 @@ function Forum() {
             <h1>{thread.titre}</h1>
             <p><strong>Auteur :</strong> {thread.auteur}</p>
             <div className="messages">
-              {thread.messages.map((msg, i) => (
-                <div key={i} className={`message-box ${msg.contenu.trim().startsWith('>') ? 'reply' : ''}`}>
-                  <div className="message-header">
-                    <strong onClick={() => navigate(`/user/${msg.auteur}`)}>{msg.auteur}</strong>
-                    <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
-                  </div>
-                  <div className="message-content">{msg.contenu}</div>
-                  <div className="message-actions">
-                    <button onClick={() => { setReplyBoxVisible(true); setReplyTo(msg); }}>💬 Répondre</button>
-                    {localStorage.getItem("role") === "admin" && (
-                      <button className="delete-button" onClick={() => deleteMessage(msg._id)}>🗑 Supprimer</button>
-                    )}
-                  </div>
+            {thread.messages.map((msg) => (
+              <div key={msg._id} id={msg._id} className={`message-box ${msg.contenu.trim().startsWith('>') ? 'reply' : ''}`}>
+                <div className="message-header">
+                  <strong onClick={() => navigate(`/user/${msg.auteur}`)}>{msg.auteur}</strong>
+                  <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
                 </div>
-              ))}
+                <div className="message-content">{msg.contenu}</div>
+                <div className="message-actions">
+                  <button onClick={() => { setReplyBoxVisible(true); setReplyTo(msg); }}>💬 Répondre</button>
+                  {localStorage.getItem("role") === "admin" && (
+                    <button className="delete-button" onClick={() => deleteMessage(msg._id)}>🗑 Supprimer</button>
+                  )}
+                </div>
+              </div>
+            ))}
             </div>
             <button onClick={() => { setReplyBoxVisible(true); setReplyTo(null); }}>📝 Répondre au thread</button>
             {replyBoxVisible && (

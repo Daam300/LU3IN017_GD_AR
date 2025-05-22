@@ -13,10 +13,9 @@ const JWT_SECRET = "votre_secret_jwt"; // même clé que dans users.js
 async function connectDB() {
   if (!forumCollection) {
     await client.connect();
-    forumCollection = client.db(dbName).collection("forum");
+    forumCollection = client.db("rdrrp_db").collection("forum");
   }
 }
-connectDB();
 router.get('/threads/search', async (req, res) => {
   const { q, auteur, startDate, endDate } = req.query;
 
@@ -44,6 +43,34 @@ router.get('/threads/search', async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
+
+router.get('/messages/user/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    await connectDB(); // 🔧 assure l'initiation de la connexion
+
+    const threads = await forumCollection.find({ 'messages.auteur': username }).toArray();
+
+    const messages = threads.flatMap(thread =>
+      thread.messages
+        .filter(msg => msg.auteur === username)
+        .map(msg => ({
+          _id: msg._id,
+          contenu: msg.contenu,
+          timestamp: msg.timestamp,
+          threadId: thread._id,
+          threadTitle: thread.titre
+        }))
+    );
+
+    res.json(messages);
+  } catch (err) {
+    console.error("Erreur API messages user:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
 
 router.get("/thread/:id", async (req, res) => {
   const thread = await forumCollection.findOne({ _id: new ObjectId(req.params.id) });
@@ -199,6 +226,7 @@ router.delete("/thread/:id", auth, async (req, res) => {
       return res.status(403).json({ message: "Seuls les admins peuvent supprimer un thread." });
     }
 
+    // ✅ supprime tout le document = thread + messages
     const result = await forumCollection.deleteOne({ _id: new ObjectId(threadId), prive: { $ne: true } });
 
     if (result.deletedCount === 1) {
