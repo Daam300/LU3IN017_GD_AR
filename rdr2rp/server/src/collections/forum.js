@@ -45,7 +45,7 @@ router.get('/threads/search', async (req, res) => {
 });
 
 router.patch("/thread/:threadId/message/:messageId/like", auth, async (req, res) => {
-  await connectDB(); // ✅ FIX ajouté ici
+  await connectDB(); 
 
   const { threadId, messageId } = req.params;
   const userId = req.user.id;
@@ -89,7 +89,7 @@ router.get('/messages/user/:username', async (req, res) => {
   const { username } = req.params;
 
   try {
-    await connectDB(); // 🔧 assure l'initiation de la connexion
+    await connectDB(); 
 
     const threads = await forumCollection.find({ 'messages.auteur': username }).toArray();
 
@@ -163,8 +163,7 @@ router.get("/threads/user/:username", async (req, res) => {
   });
 
   
-  // ✅ Supprimer un thread (admin uniquement)
-// Supprimer un message d'un thread (admin ou auteur uniquement)
+
 router.delete("/thread/:threadId/message/:messageId", auth, async (req, res) => {
   const { threadId, messageId } = req.params;
 
@@ -209,7 +208,7 @@ router.get("/threads/admin", async (req, res) => {
 });
 
 router.post("/thread", async (req, res) => {
-  await connectDB(); // ✅ nécessaire pour initialiser forumCollection
+  await connectDB(); 
 
   const { titre, auteur, message, description, prive = false } = req.body;
 
@@ -233,7 +232,7 @@ router.post("/thread", async (req, res) => {
   res.status(201).json({ threadId: result.insertedId });
 });
 
-// Récupérer tous les threads
+
 router.get("/threads", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   let isAdmin = false;
@@ -244,7 +243,6 @@ router.get("/threads", async (req, res) => {
       const dbUser = await client.db(dbName).collection("users").findOne({ _id: new ObjectId(user.id) });
       isAdmin = dbUser?.role === "admin";
     } catch {
-      // ignore
     }
   }
 
@@ -267,7 +265,6 @@ router.delete("/thread/:id", auth, async (req, res) => {
       return res.status(403).json({ message: "Seuls les admins peuvent supprimer un thread." });
     }
 
-    // ✅ supprime tout le document = thread + messages
     const result = await forumCollection.deleteOne({ _id: new ObjectId(threadId), prive: { $ne: true } });
 
     if (result.deletedCount === 1) {
@@ -282,7 +279,6 @@ router.delete("/thread/:id", auth, async (req, res) => {
 });
 
 
-// Supprimer un message d'un thread (admin seulement)
 router.delete("/thread/:threadId/message/:messageId", auth, async (req, res) => {
     if (req.user.role !== "admin") {
         return res.status(403).json({ message: "Accès refusé, admin requis" });
@@ -306,7 +302,7 @@ router.delete("/thread/:threadId/message/:messageId", auth, async (req, res) => 
     }
   });
 
-// Ajouter une réponse à un thread
+
 router.post("/thread/:id/message", async (req, res) => {
   const threadId = req.params.id;
   const { auteur, contenu } = req.body;
@@ -316,7 +312,7 @@ router.post("/thread/:id/message", async (req, res) => {
     {
         $push: {
             messages: {
-              _id: new ObjectId(), // 👈 ajoute cet ID unique ici
+              _id: new ObjectId(), 
               auteur,
               contenu,
               timestamp: new Date()

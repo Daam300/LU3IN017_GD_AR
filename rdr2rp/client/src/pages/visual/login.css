@@ -52,9 +52,9 @@ body, input, button, label, h2, h3, h4, h5, h6, p, a, span, div {
 h1 {
   margin-bottom: 20px;
   color: #e0c097;
-  font-size: 5px;
+  font-size: 4px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 .login-container h1 {

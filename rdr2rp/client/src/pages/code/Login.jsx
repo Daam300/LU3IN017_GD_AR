@@ -50,7 +50,7 @@ function LoginForm() {
   return (
     <div className="login-container">
       <BackgroundSlideshow />
-      <h1>Ouvrir une session</h1>
+      <h1>Connexion</h1>
       <form method="POST" onSubmit={handleSubmit} className="login-form">
         <label htmlFor="login">Nom d'utilisateur</label>
         <input

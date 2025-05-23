@@ -12,8 +12,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'adamrguig82@gmail.com', // ⚠️ à remplacer
-    pass: ''        // ⚠️ mot de passe d'application Gmail
+    user: 'adamrguig82@gmail.com', 
+    pass: 'uvgr xqmv tbpp zuez'        
   }
 });
 
@@ -47,7 +47,7 @@ client.connect().then(() => {
   usersCollection = db.collection("users");
 });
 
-// Middleware auth JWT
+
 function auth(req, res, next) {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).send("Token manquant");
@@ -79,7 +79,6 @@ router.get('/users/search', async (req, res) => {
   res.json(users);
 });
 
-// REGISTER
 const multer = require('multer');
 const upload = multer();
 
@@ -261,7 +260,7 @@ router.patch("/me", auth, async (req, res) => {
   }
 });
 
-// ADMIN 
+
 router.get('/users/pending', async (req, res) => {
   const users = await usersCollection.find({ status: 'pending' }).toArray();
   res.json(users);
