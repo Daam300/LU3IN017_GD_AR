@@ -43,6 +43,7 @@ function Profile() {
         const msgRes = await fetch(`http://localhost:3000/api/forum/messages/user/${data.username}`);
         const msgs = await msgRes.json();
         setUserMessages(msgs);
+        setCharacterBio(data.characterBio || 'Biographie du personnage non renseignée.');
       })
       .catch(err => console.error('Erreur récupération profil', err));
   }, []);

@@ -214,6 +214,21 @@ router.patch("/me/bio", auth, async (req, res) => {
 
   res.status(200).json({ message: "Bio mise à jour" });
 });
+router.patch("/me/character-bio", auth, async (req, res) => {
+  const { characterBio } = req.body;
+  if (!characterBio) return res.status(400).json({ message: "Biographie manquante" });
+
+  try {
+    await usersCollection.updateOne(
+      { _id: new ObjectId(req.user.id) },
+      { $set: { characterBio } }
+    );
+    res.status(200).json({ message: "Biographie du personnage mise à jour" });
+  } catch (err) {
+    console.error("❌ Erreur mise à jour characterBio :", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
 router.patch("/me", auth, async (req, res) => {
   const updates = {};
   const { username, email, password } = req.body;
