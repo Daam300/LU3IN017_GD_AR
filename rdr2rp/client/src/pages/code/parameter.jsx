@@ -82,6 +82,9 @@ function Parameter() {
         <button className="delete-account-btn" type="button" onClick={handleDeleteAccount}>
           Supprimer mon compte
         </button>
+        <button className="go-home-btn" type="button" onClick={() => window.location.href = '/homepage'}>
+          Retour à l'accueil
+        </button>
         <button type="submit" className="save-button">Sauvegarder</button>
       </form>
     </div>

@@ -7,6 +7,7 @@ import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
 import rdr2Logo from '../../assets/rdr2.png';
 import SketchfabModel from './SketchfabModel'; // 👈 import du modèle Sketchfab
+import adminIcon from '../../assets/admin.png';
 
 function Profile() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function Profile() {
   const [characterBio, setCharacterBio] = useState('Biographie du personnage non renseignée.');
   const [userMessages, setUserMessages] = useState([]);
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
@@ -44,6 +46,11 @@ function Profile() {
       })
       .catch(err => console.error('Erreur récupération profil', err));
   }, []);
+
+  useEffect(() => {
+    const role = localStorage.getItem('role');
+    setIsAdmin(role === 'admin');
+  }, [theme]);
 
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
@@ -183,6 +190,14 @@ function Profile() {
               className="icon-button"
               onClick={() => navigate('/parameter')}
             />
+            {isAdmin && (
+              <img
+                src={adminIcon}
+                alt="Admin"
+                className="icon-button"
+                onClick={() => navigate('/admin')}
+              />
+            )}
             <img
               src={logoutIcon}
               alt="Se déconnecter"

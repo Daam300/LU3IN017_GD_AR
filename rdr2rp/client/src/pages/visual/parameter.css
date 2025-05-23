@@ -120,3 +120,22 @@ body.dark-mode {
   color: #fff;
   transform: scale(1.05);
 }
+
+.go-home-btn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #c2955b;
+  color: #121212;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.go-home-btn:hover {
+  background-color: #e0c097;
+  color: #800001;
+  transform: scale(1.05);
+}

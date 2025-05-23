@@ -332,4 +332,20 @@ router.post("/thread/:id/message", async (req, res) => {
   }
 });
 
+// Route pour statistiques globales (forums créés, utilisateurs inscrits)
+router.get('/stats', async (req, res) => {
+  await connectDB();
+  try {
+    // Nombre total de forums créés (tous, publics et privés)
+    const totalForums = await forumCollection.countDocuments();
+    // Nombre total d'utilisateurs inscrits (tous statuts)
+    const usersCollection = client.db(dbName).collection('users');
+    const totalUsers = await usersCollection.countDocuments();
+    res.json({ totalForums, totalUsers });
+  } catch (err) {
+    console.error('Erreur stats globales:', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;

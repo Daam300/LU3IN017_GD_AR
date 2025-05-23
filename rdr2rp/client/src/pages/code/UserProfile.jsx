@@ -50,8 +50,8 @@ function UserProfile() {
             </div>
 
             <div className="login_register">
-            <img src={userData.profilePic || profileIcon} alt="Profil" className="icon-button" />
-            <img src={parameterIcon} alt="Paramètres" className="icon-button" />
+            <img src={userData.profilePic || profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
+            <img src={parameterIcon} alt="Paramètres" className="icon-button" onClick={() => navigate('/parameter')} />
             <img src={logoutIcon} alt="Déconnexion" className="icon-button" onClick={() => navigate('/')} />
             </div>
         </div>

@@ -19,6 +19,8 @@ function Homepage() {
   const [searchResults, setSearchResults] = useState({ users: [], threads: [] });
   const [isAdmin, setIsAdmin] = useState(false);
   const [forums, setForums] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [userSince, setUserSince] = useState(null);
 
   const [favoris, setFavoris] = useState(() => {
     const saved = localStorage.getItem('favoris');
@@ -44,10 +46,25 @@ function Homepage() {
     fetch("http://localhost:3000/api/forum/threads")
       .then(res => res.json())
       .then(data => {
-        const publicOnly = data.filter(thread => !thread.prive); // ✅ filtrer ici seulement public
+        const publicOnly = data.filter(thread => !thread.prive);
         setForums(publicOnly);
       })
       .catch(err => console.error("Erreur chargement forums:", err));
+
+    // Récupérer les statistiques globales
+    fetch("http://localhost:3000/api/forum/stats")
+      .then(res => res.json())
+      .then(setStats)
+      .catch(err => console.error("Erreur chargement stats:", err));
+
+    // Récupérer la date d'inscription de l'utilisateur connecté
+    const username = localStorage.getItem('username');
+    if (username) {
+      fetch(`http://localhost:3000/api/user/${username}`)
+        .then(res => res.json())
+        .then(data => setUserSince(data.createdAt))
+        .catch(() => setUserSince(null));
+    }
   }, []);
 
   const handleSearchSubmit = async (e) => {
@@ -112,8 +129,25 @@ function Homepage() {
       <div className="content-layout">
         <aside className="sidebar">
           <h2>Navigation</h2>
-          <p>Bienvenue dans l'application !</p>
-          <Link to="/dashboard">Dashboard</Link>
+          <div className="global-stats">
+            <h3>Statistiques du site</h3>
+            <div className="stats-row">
+              <div className="stats-block">
+                <span className="stats-label">👥 Utilisateurs inscrits</span>
+                <span className="stats-value">{stats ? stats.totalUsers : '...'}</span>
+              </div>
+              <div className="stats-block">
+                <span className="stats-label">💬 Forums créés</span>
+                <span className="stats-value">{stats ? stats.totalForums : '...'}</span>
+              </div>
+            </div>
+            <div className="stats-row">
+              <div className="stats-block">
+                <span className="stats-label">🗓️ Inscrit depuis</span>
+                <span className="stats-value">{userSince ? new Date(userSince).toLocaleDateString() : '...'}</span>
+              </div>
+            </div>
+          </div>
           {favoris.length > 0 && (
             <>
               <h3>⭐ Favoris</h3>
