@@ -9,6 +9,7 @@ import logoutIcon from '../../assets/logout.png';
 import adminIcon from '../../assets/admin.png';
 import favIcon from '../../assets/fav.png';
 import noFavIcon from '../../assets/no_fav.png';
+import { useUser } from './UserContext';
 
 function Forum() {
   const { forumId } = useParams();
@@ -18,10 +19,13 @@ function Forum() {
   const [replyContent, setReplyContent] = useState('');
   const [replyTo, setReplyTo] = useState(null);
   const [userPics, setUserPics] = useState({});
-
+  const { profilePic: userProfilePic } = useUser();
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+  
+    // Charger le thread
     fetch(`http://localhost:3000/api/forum/thread/${forumId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -29,44 +33,44 @@ function Forum() {
         if (!res.ok) throw new Error("Accès refusé");
         return res.json();
       })
-      .then(setThread)
+      .then(data => {
+        setThread(data);
+  
+        // Scroll vers l'ancre si nécessaire
+        const hash = window.location.hash.substring(1);
+        if (hash) {
+          setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 300);
+        }
+  
+        // Récupérer les images de profil des auteurs
+        if (data.messages) {
+          const auteurs = Array.from(new Set(data.messages.map(m => m.auteur)));
+          Promise.all(
+            auteurs.map(async auteur => {
+              const res = await fetch(`http://localhost:3000/api/user/${auteur}`);
+              if (res.ok) {
+                const user = await res.json();
+                return { auteur, profilePic: user.profilePic };
+              }
+              return { auteur, profilePic: null };
+            })
+          ).then(results => {
+            const pics = {};
+            results.forEach(({ auteur, profilePic }) => {
+              pics[auteur] = profilePic || profileIcon;
+            });
+            setUserPics(pics);
+          });
+        }
+      })
       .catch(err => {
         alert("Accès interdit ou erreur de chargement.");
         navigate("/homepage");
       });
   }, [forumId]);
-
-  useEffect(() => {
-    const hash = window.location.hash.substring(1); // récupère l’ID
-    if (hash) {
-      setTimeout(() => {
-        const el = document.getElementById(hash);
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 300);
-    }
-  }, [thread]); 
-
-  useEffect(() => {
-    if (thread && thread.messages) {
-      const auteurs = Array.from(new Set(thread.messages.map(m => m.auteur)));
-      Promise.all(
-        auteurs.map(async auteur => {
-          const res = await fetch(`http://localhost:3000/api/users/${auteur}`);
-          if (res.ok) {
-            const data = await res.json();
-            return { auteur, profilePic: data.profilePic };
-          }
-          return { auteur, profilePic: null };
-        })
-      ).then(results => {
-        const pics = {};
-        results.forEach(({ auteur, profilePic }) => {
-          pics[auteur] = profilePic;
-        });
-        setUserPics(pics);
-      });
-    }
-  }, [thread]);
 
   const sendReply = async () => {
     const auteur = localStorage.getItem('username');
@@ -123,7 +127,7 @@ function Forum() {
           </div>
           <div className="search1"><form><input type="text" placeholder="Recherche..." /></form></div>
           <div className="login_register">
-            <img src={profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
+          <img src={userProfilePic || profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
             <img src={parameterIcon} alt="Paramètres" className="icon-button" onClick={() => navigate('/parameter')} />
             {localStorage.getItem("role") === "admin" && (
               <img src={adminIcon} alt="Admin" className="icon-button" onClick={() => navigate('/admin')} />

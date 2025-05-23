@@ -3,13 +3,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import '../visual/homepage.css';
 import backgroundImage from '../../assets/rdr2.png';
 import BackgroundSlideshow from './BackgroundSlideshow';
-import profileIcon from '../../assets/profile.png';
+import { useUser } from './UserContext';
 import parameterIcon from '../../assets/parameter.png';
 import logoutIcon from '../../assets/logout.png';
 import adminIcon from '../../assets/admin.png';
 import rdr2Logo from '../../assets/rdr2.png';
 import favIcon from '../../assets/fav.png';
 import noFavIcon from '../../assets/no_fav.png';
+import profileIcon from '../../assets/profile.png';
 
 function Homepage() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function Homepage() {
   const [forums, setForums] = useState([]);
   const [stats, setStats] = useState(null);
   const [userSince, setUserSince] = useState(null);
+  const { profilePic } = useUser();
 
   const [favoris, setFavoris] = useState(() => {
     const saved = localStorage.getItem('favoris');
@@ -118,7 +120,7 @@ function Homepage() {
             </form>
           </div>
           <div className="login_register">
-            <img src={profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
+          <img src={profilePic || profileIcon} alt="Profil" className="icon-button" onClick={() => navigate('/profile')} />
             <img src={parameterIcon} alt="Paramètres" className="icon-button" onClick={() => navigate('/parameter')} />
             {isAdmin && <img src={adminIcon} alt="Admin" className="icon-button" onClick={() => navigate('/admin')} />}
             <img src={logoutIcon} alt="Logout" className="icon-button" onClick={handleLogout} />
